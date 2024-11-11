@@ -1,22 +1,9 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - backend-stay-easy
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   workflow_dispatch:
-  
-  env:
-  AZURE_WEBAPP_NAME: backend-stay-easy    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './BackEnd'      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '20.x'                # set this to the node version to use
-
-  
-permissions:
-  contents: read
 
 jobs:
   build:
@@ -29,10 +16,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-          cache: 'npm'
 
       - name: npm install, build, and test
         run: |
+          cd BackEnd
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -41,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: BackEnd
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,7 +37,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write # This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -70,7 +57,5 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'backend-stay-easy'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: 'Production'
-          package: './BackEnd'
-          
+          package: BackEnd
