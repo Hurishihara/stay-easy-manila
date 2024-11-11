@@ -8,10 +8,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
   env:
   AZURE_WEBAPP_NAME: backend-stay-easy    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './BackEnd'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '20.x'                # set this to the node version to use
+
+  
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -24,6 +29,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+          cache: 'npm'
 
       - name: npm install, build, and test
         run: |
@@ -64,6 +70,7 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'backend-stay-easy'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: 'Production'
-          package: .
+          package: './BackEnd'
           
