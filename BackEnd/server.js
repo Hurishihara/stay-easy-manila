@@ -60,6 +60,6 @@ app.post('/recommendations', async (req, res) => {
 }) 
 
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Backend Server running on http://localhost:${process.env.PORT || 3000}`)
+app.listen(process.env.PORT, () => {
+    console.log(`Backend Server running on http://localhost:${process.env.PORT}`)
 })
