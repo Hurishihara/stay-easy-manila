@@ -12,7 +12,8 @@
     "nodemon": "^3.1.4",
     "nspell": "^2.1.5",
     "pg": "^8.13.0",
-    "stopword": "^3.0.1"
+    "stopword": "^3.0.1",
+    "uninstall": "^0.0.0"
   },
   "scripts": {
     "start": "node server.js"
