@@ -62,5 +62,5 @@ jobs:
         with:
           app-name: 'stayeasymanila'
           slot-name: 'Production'
-          package: BackEnd
+          package: .
           
