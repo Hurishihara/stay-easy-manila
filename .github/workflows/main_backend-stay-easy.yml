@@ -8,33 +8,39 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Node.js version
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
-        run: |
-          cd BackEnd
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-        
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./BackEnd
+
+      - name: Build the app
+        run: npm run build --if-present
+        working-directory: ./BackEnd
+
+      - name: Run tests
+        run: npm run test --if-present
+        working-directory: ./BackEnd
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: ./BackEnd
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_and_deploy
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -56,9 +62,8 @@ jobs:
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'backend-stay-easy'
-          publish-profile: ${{secrets.AZURE_WEBAPP_PUBLISH_PROFILE}}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: 'Production'
-          package: './BackEnd'
+          package: node-app
