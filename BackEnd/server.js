@@ -6,11 +6,11 @@ import nspell from 'nspell'
 import { getRecommendations } from './recommendation.js'
 import { getVocabulary } from './vectorization.js'
 const app = express()
-const port = 5000;
+const port = process.env.port || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({origin: 'http://localhost:5173', 
+app.use(cors({origin: ['http://localhost:5173', 'https://black-ground-020567c00.5.azurestaticapps.net/'], 
     credentials: true, 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'}))
 app.use('/images', express.static('public/images'))
