@@ -23,12 +23,12 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-      
+        working-directory: ./BackEnd
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: './BackEnd'
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,5 +57,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'backend-stay-easy'
+          publish-profile: ${{secrets.AZURE_WEBAPP_PUBLISH_PROFILE}}
           slot-name: 'Production'
           package: './BackEnd'
