@@ -65,8 +65,4 @@ const predictionSimilarResult = async (query) => {
     return results;
 }
 
-console.log(await predictionSimilarResult('Breathtaking sunset view around makati central'))// Test the function)
-
-
-
 export { predictionSimilarResult };
