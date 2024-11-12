@@ -1,6 +1,6 @@
 import fs from 'fs'
 import natural from 'natural'
-import { fetchHotel } from './db.mjs';
+import { fetchHotel } from './db.js';
 
 
 // Initialize TF-IDF Model using the 'natural' library

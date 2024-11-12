@@ -1,7 +1,7 @@
 import KNN from 'ml-knn';
 import { PCA } from 'ml-pca';
-import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization.mjs';
-import { fetchHotel } from './db.mjs';
+import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization.js';
+import { fetchHotel } from './db.js';
 
 
 
@@ -91,5 +91,7 @@ const predictionTopResult = async (query) => {
     return result;
     
 }
+
+console.log(await predictionTopResult('Looking for a luxurious hotel with modern amenities')) // Test the function
 
  export { predictionTopResult, getHotelNames, getTfIdfScores };

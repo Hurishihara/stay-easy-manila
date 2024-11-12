@@ -1,6 +1,6 @@
 import natural from 'natural'
 // Imports the TF-IDF Model and the preprocess function
-import { preprocess, loadTfIdfModel, main } from './dataPreparation.mjs';
+import { preprocess, loadTfIdfModel, main } from './dataPreparation.js';
 
 // Imports the natural library's TF-IDF class
 const TfIdf = natural.TfIdf; 

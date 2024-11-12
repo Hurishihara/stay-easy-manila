@@ -1,8 +1,8 @@
 import express from 'express';
 import en from 'dictionary-en'
 import nspell from 'nspell'
-import { getRecommendations } from '../recommendation.mjs'
-import { getVocabulary } from '../vectorization.mjs'
+import { getRecommendations } from '../recommendation.js'
+import { getVocabulary } from '../vectorization.js'
 const router = express.Router();
 const spell = nspell(en)
 
