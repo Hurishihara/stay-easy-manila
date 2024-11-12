@@ -1,7 +1,7 @@
 import KNN from 'ml-knn';
 import { PCA } from 'ml-pca';
-import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization.js';
-import { fetchHotel } from './db.js';
+import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization.mjs';
+import { fetchHotel } from './db.mjs';
 
 
 

@@ -1,5 +1,5 @@
-import { getHotelNames, getTfIdfScores } from "./knnModel.js";
-import { getTfIdfVector, initializedTfIdf, getVocabulary } from "./vectorization.js";
+import { getHotelNames, getTfIdfScores } from "./knnModel.mjs";
+import { getTfIdfVector, initializedTfIdf, getVocabulary } from "./vectorization.mjs";
 import { PCA } from "ml-pca";
 
 

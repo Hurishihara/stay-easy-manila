@@ -1,6 +1,6 @@
-import { fetchSimilarResultsHotel, fetchTopResultHotel } from "./db.js";
-import { predictionTopResult } from "./knnModel.js";
-import { predictionSimilarResult } from "./similarity.js";
+import { fetchSimilarResultsHotel, fetchTopResultHotel } from "./db.mjs";
+import { predictionTopResult } from "./knnModel.mjs";
+import { predictionSimilarResult } from "./similarity.mjs";
 
 const getRecommendations =  async (query) => {
     

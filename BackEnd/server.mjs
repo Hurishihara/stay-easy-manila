@@ -4,7 +4,7 @@ import cors from 'cors'
 import en from 'dictionary-en'
 import nspell from 'nspell'
 import { getRecommendations } from './recommendation.js'
-import { getVocabulary } from './vectorization.js'
+import { getVocabulary } from './vectorization.mjs'
 const app = express()
 
 
