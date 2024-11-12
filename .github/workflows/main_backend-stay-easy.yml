@@ -60,8 +60,8 @@ jobs:
       - name: List files in BackEnd directory
         run: ls -R ./BackEnd
 
-      - name: List contents of BackEnd/node-app
-        run: ls -R ./BackEnd/node-app
+      - name: List contents of BackEnd
+        run: ls -R ./BackEnd
       
       - name: Login to Azure
         uses: azure/login@v2
