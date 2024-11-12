@@ -14,11 +14,11 @@
     "stopword": "^3.0.1"
   },
   "scripts": {
-    "start": "node server.mjs"
+    "start": "node server.js"
   },
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.mjs",
+  "main": "server.js",
   "type": "module",
   "keywords": [],
   "author": "",
