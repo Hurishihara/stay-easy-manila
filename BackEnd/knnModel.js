@@ -64,34 +64,14 @@ const initializedKNN = async () => {
     return knn;
 }
 
-
-// Cosine Similarity Function
-const cosineSimilarity = (vec1, vec2) => {
-    
-    // Check if the vectors are arrays
-    vec1 = Array.isArray(vec1) ? vec1 : Array.from(vec1);
-    vec2 = Array.isArray(vec2) ? vec2 : Array.from(vec2);
-
-    const dotProduct = vec1.reduce((sum, value, index) => sum + value * vec2[index], 0);
-    const magnitude1 = Math.sqrt(vec1.reduce((sum, value) => sum + Math.pow(value, 2), 0))
-    const magnitude2 = Math.sqrt(vec2.reduce((sum, value) => sum + Math.pow(value, 2), 0))
-    if(magnitude1 === 0 || magnitude2 === 0) {
-        return 0;
-    }
-    return dotProduct / (magnitude1 * magnitude2);
-}
-
 const predictionTopResult = async (query) => {
     const knn = await initializedKNN(); // Get the knn model
     const userQueryVector = await getTfIdfVector(query); // Get the TF-IDF Vector for the user's query
     const reduceQueryVector = pca.predict([userQueryVector], {nComponents: 98}).to1DArray() // Reduce the query vector using PCA
     
     const result = knn.predict(reduceQueryVector); // Predict the result
-
     return result;
     
 }
-
-console.log(await predictionTopResult('Looking for a luxurious hotel with modern amenities')) // Test the function
 
  export { predictionTopResult, getHotelNames, getTfIdfScores };
