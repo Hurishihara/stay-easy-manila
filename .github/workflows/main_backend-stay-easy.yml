@@ -55,6 +55,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+          path: ./BackEnd
+
+      - name: List files in BackEnd directory
+        run: ls -R ./BackEnd
+
+      - name: List contents of BackEnd/node-app
+        run: ls -R ./BackEnd/node-app
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -70,5 +77,5 @@ jobs:
           app-name: 'backend-stay-easy'
           publish-profile: ${{secrets.AZURE_WEBAPP_PUBLISH_PROFILE}}
           slot-name: 'Production'
-          package: node-app
+          package: ./BackEnd/node-app
           
