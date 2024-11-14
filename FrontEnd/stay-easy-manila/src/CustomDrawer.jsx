@@ -33,7 +33,7 @@ import { FaCheckCircle } from "react-icons/fa";
 const CustomDrawer = ({isOpen, onClose, selectedHotel}) => {
   
 
-    const api = 'http://localhost:5000'
+    const api = 'http://localhost:3000'
 
     const handleGetDirections = () => {
         if (navigator.geolocation) {

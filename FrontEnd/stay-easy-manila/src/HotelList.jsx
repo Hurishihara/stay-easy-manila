@@ -55,7 +55,8 @@ const HotelList = () => {
           starRating={item.stars}
           hotelType={item.stars}
           imagePath={item.image_folder_path}
-          onClick={() => openDrawer(item)} 
+          onClick={() => openDrawer(item)}
+          
           />
         ))}
         </Flex>

@@ -37,7 +37,7 @@ function HeroSection () {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const api = import.meta.env.VITE_API_URL
+        const api = 'http://localhost:3000/api'
         
        
         const response = axios.post(`${api}/recommendations`, {input})
@@ -186,7 +186,7 @@ function HeroSection () {
                     <Box>
                         <Heading
                         fontFamily='heading'
-                        fontSize={{base: '4rem', md: '6rem'}}
+                        fontSize={{base: '3rem', md: '2rem', lg: '6rem'}}
                         fontWeight='bold'
                         textAlign={{base: 'left', md: 'left'}}
                         >
@@ -218,15 +218,13 @@ function HeroSection () {
                 <GridItem
                 colSpan={{base: 12, md: 6}}
                 >
-                    <Box pb={{base: '1.5rem', md: 'none'}}>
+                    <Box>
                         <Slider {...settings}>
                             {images.map((src, index) => (
                                 <Image 
                                 borderRadius='3.75rem' 
                                 key={index} src={src} 
                                 alt={`hotel-image${index}` } 
-                                minH={{base: '16.875rem', md: '16.875rem'}}
-                                minW={{base: '21.5625rem', md: '32.25rem'}}
                                 alignContent={{base: 'left', md: 'left'}}
                                 />
                             ))}

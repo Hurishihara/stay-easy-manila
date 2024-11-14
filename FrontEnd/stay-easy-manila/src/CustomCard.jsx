@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 
 const CustomCard = ({hotelName, result, description, starRating, hotelType, imagePath, onClick}) => {
     
-    const api = 'http://localhost:5000'
+    const api = 'http://localhost:3000'
     
     const truncateDescription = (description, maxLength) => {
       if(!description) return '';
