@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from './Navbar.jsx'
-import { Box, Flex, useDisclosure } from '@chakra-ui/react'
+import { Box, Flex, Heading, Stack, useDisclosure } from '@chakra-ui/react'
 import { useHotelStore } from './store/hotelStore.js'
-import Slider from 'react-slick'
 import { FaStar } from "react-icons/fa";
 import CustomCard from './CustomCard.jsx'
 import CustomDrawer from './CustomDrawer.jsx'
 import { useNavigate } from 'react-router-dom'
+import src from './assets/recommendationsBG.png'
+import Slider from 'react-slick'
+import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
 
 const HotelList = () => {
   
@@ -25,19 +27,30 @@ const HotelList = () => {
 
   
 
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      nextArrow: <ArrowForwardIcon />,
+      prevArrow: <ArrowBackIcon />,
+    }
+
 
   return (
     <>
       <Box 
         bg='primary' 
-        color='white' 
-        pl={{base: '2rem', md: 'none'}} 
-        pr={{base: '2rem', md: 'none'}} >
+        color='white'
+        backgroundImage={`url(${src})`}
+        backgroundSize='cover'
+        h='100vh'
+        >
+
         <NavBar />
-        <Flex 
-        flexDirection={{base: 'column', md: 'row'}} 
-        flexWrap='wrap' 
-        justifyContent='space-evenly' >
+        
+        <Slider {...settings}>
           <CustomCard 
           hotelName={hotel[0].hotel_name}
           result='Top Result'
@@ -56,10 +69,10 @@ const HotelList = () => {
           hotelType={item.stars}
           imagePath={item.image_folder_path}
           onClick={() => openDrawer(item)}
-          
           />
         ))}
-        </Flex>
+        </Slider>
+        
       {selectedHotel && <CustomDrawer 
       isOpen={isOpen} 
       onClose={onClose} 

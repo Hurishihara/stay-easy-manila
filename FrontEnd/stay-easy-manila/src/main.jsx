@@ -1,6 +1,11 @@
 import '@fontsource/atma'
 import '@fontsource/amaranth'
 import '@fontsource-variable/outfit'
+import '@fontsource/poppins'
+import '@fontsource-variable/roboto-mono'
+import '@fontsource-variable/montserrat';
+import '@fontsource-variable/open-sans'
+import '@fontsource-variable/lora';
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -10,13 +15,14 @@ import HotelList from './HotelList.jsx'
 
 const router = createBrowserRouter([
   {path: '/', element: <App />},
-  {path: '/recommendations', element: <HotelList/>}
+  {path: '/ph/recommendations', element: <HotelList/>}
 ])
 
 const theme = extendTheme({
   colors: {
-    primary: '#344C64',
-    button: '#E4F9FF',
+    primary: '#FEFAF6',
+    fontColor: '#181C14',
+    button: '#102C57',
     buttonColor: {
       50: '#e5f9ff', // Lightest shade
       100: '#bbedfb',
@@ -32,18 +38,27 @@ const theme = extendTheme({
   },
   
   fonts: {
-    title: "'Atma', sans-serif",
+    title: "'Poppins', sans-serif",
     heading: "'Amaranth', sans-serif",
+    homePageHeading: "'Montserrat Variable', sans-serif",
+    drawerFontHeading: "'Open Sans Variable', sans-serif",
+    buttonFont: "'Roboto Mono Variable', monospace",
     body: "'Outfit', sans-serif",
+    reviewFont: "'Lora Variable', serif",
+
   },
   
   fontWeights: {
-    atma: {
+    poppins: {
+      thin: 100,
+      extraLight: 200,
       light: 300,
       regular: 400,
       medium: 500,
       semiBold: 600,
-      bold: 700
+      bold: 700,
+      extraBold: 800,
+      black: 900
     },
     amaranth: {
       regular: 400,

@@ -14,15 +14,31 @@ import {
     Grid,
     GridItem,
     Stack,
-    useToast
+    useToast,
+    chakra,
+    AspectRatio,
+    useDisclosure,
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
+    DrawerHeader,
+    DrawerBody,
+    CheckboxGroup,
+    Checkbox,
+    FormControl,
+    FormLabel,
+    FormHelperText,
+    DrawerFooter
 } from '@chakra-ui/react'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 import images from './images'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useClickStore } from './store/clickStore.js';
 import { useHotelStore } from './store/hotelStore.js';
 import { useNavigate } from 'react-router-dom';
-
+import { motion, isValidMotionProp } from 'framer-motion';
 
 
 function HeroSection () {
@@ -30,17 +46,24 @@ function HeroSection () {
     // Store for the click state
     const { isClicked, setIsClicked } = useClickStore()
     const { setHotel } = useHotelStore()
-    const [input, setInput] = useState('')
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [hotelRating, setHotelRating] = useState([])
+    const [hotelCharacteristics, setHotelCharacteristics] = useState('')
+    const [hotelAmenities, setHotelAmenities] = useState('')
+    const [additionalRequests, setAdditionalRequests] = useState('')
     const navigate = useNavigate()
     const toast = useToast()
+    
+
     
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const api = 'http://localhost:3000/api'
         
-       
-        const response = axios.post(`${api}/recommendations`, {input})
+        const input = `${hotelCharacteristics} ${hotelAmenities} ${additionalRequests}`
+        const response = axios.post(`${api}/recommendations`, { hotelRating, input })
+        
        
         toast.promise(response, {
             loading: {
@@ -49,7 +72,7 @@ function HeroSection () {
                 status: 'info',
                 duration: 3000,
                 isClosable: true,
-                position: 'bottom-right',
+                position: 'bottom-left',
                 containerStyle: {
                     fontSize: '1.25rem',
                     fontFamily: 'body',
@@ -60,7 +83,7 @@ function HeroSection () {
                 description: 'You will be redirected to the recommendations page...',
                 status: 'success',
                 duration: 3000,
-                position: 'bottom-right',
+                position: 'bottom-left',
                 isClosable: true,
                 containerStyle: {
                     fontSize: '1.25rem',
@@ -73,7 +96,7 @@ function HeroSection () {
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
-                position: 'bottom-right',
+                position: 'bottom-left',
                 containerStyle: {
                     fontSize: '1.25rem',
                     fontFamily: 'body',
@@ -85,14 +108,15 @@ function HeroSection () {
         response.then((res) => {
             setHotel(res.data.data)
             setTimeout(() => {
-                navigate('/recommendations')
+                navigate('/ph/recommendations')
             }, 3000)
         }).catch((err) => {
             console.error(err)
         })
+    }
 
-                
-
+    const handleDrawerClick = () => {
+        onOpen()
     }
 
         // Settings for the slider
@@ -103,135 +127,192 @@ function HeroSection () {
             speed: 500,
             waitForAnimate: false,
             autoplay: true,
-            autoplaySpeed: 3000,
+            autoplaySpeed: 2500,
             cssEase: 'linear',
         }
     
-        // Function to render the input or the buttons
-        const renderInputOrButtons = () => {
-            if(isClicked) {
-                return (
-                    <Input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder= 'What kind of hotel are you looking for?'
-                    bg='button'
-                    mt='2.8125rem'
-                    mb={{base: 'none', md: '2.5rem'}}
-                    pl={{base: 'none', md: '2.8125rem'}}
-                    minW={{base: '21.5625rem', md: '44.0625rem'}}
-                    minH={{base: '4.8125rem', md: '6.4375rem'}}
-                    borderRadius='3.125rem'
-                    fontSize={{base: '1.15rem', md: '1.875rem'}}
-                    fontFamily='regular'
-                    letterSpacing={{base: '0.03rem', md: '0.05rem'}}
-                    color='primary'
-                    textAlign={{base: 'center', md: 'left'}}
-                    _placeholder={{
-                        color: 'primary',
-                        opacity: '50%'
-                    }}
-                    />
-                );
-            }
-            else {
-                return (
-                    <Stack
-                    variant='unstyled'
-                    direction={{base: 'column', md: 'row'}}
-                    mt='2.8125rem'
-                    mb={{base: 'none', md: '2.5rem'}}
-                    spacing={{base: '1rem', md: '3.125rem'}}
-                    >
-                        <Button
-                        bgColor='button'
-                        color='primary'
-                        minW={{base: '100%', md: '18.75rem'}}
-                        minH='4.375rem'
-                        borderRadius='3.75rem'
-                        fontSize='1.25rem'
-                        letterSpacing='1.5px'
-                        fontFamily='heading'
-                        fontWeight='semibold'
-                        onClick={() => setIsClicked(true)}>
-                            GET STARTED
-                        </Button>
-                        <Button
-                        bgColor='rgba(228, 249, 255, 0.7)'
-                        color='white'
-                        minW={{base: '100%', md: '18.75rem'}}
-                        minH='4.375rem'
-                        borderRadius='3.75rem'
-                        fontSize='1.25rem'
-                        letterSpacing='1.5px'
-                        fontFamily='heading'
-                        fontWeight='semibold'>
-                            LEARN MORE
-                        </Button>
-                    </Stack>
-                )
-            }
-        }
+        
 
     return (
         <>
-            <Grid 
-            templateColumns={{base: '1fr', md: 'repeat(12, 1fr)'}} 
-            gap={{base: '2rem', md: '5rem'}} 
-            pl={{base: '2rem', md: '11.75rem'}} 
-            pr={{base: '2rem', md: '11.75rem'}} 
-            pt={{base: '3.75rem', md: '6.34375rem'}}
+        
+            <Slider {...settings}>
+                {images.map((src, index) => (
+                   <Box p='2rem'>
+                    <Box 
+                    key={index}
+                    backgroundImage={`url(${src})`}
+                    backgroundSize='cover'
+                    borderRadius='1.75rem'
+                    h='90vh'
+                    
+                    >
+                        <Grid
+                        templateColumns='repeat(12, 1fr)'
+                        p='5rem'
+                        gap='5rem'
+                        >
+                            <GridItem colSpan='8'>
+                                <Heading
+                                fontFamily='homePageHeading'
+                                fontSize='5rem'
+                                color='whitesmoke'
+                                fontWeight='bold'
+                                lineHeight='5rem'
+                                >
+                                    Find the Perfect Stay in Metro Manila with Ease!
+                                </Heading>
+                            </GridItem>
+                            <GridItem colSpan='7'>
+                                <Text
+                                fontFamily='body'
+                                fontSize='1.50rem'
+                                as='i'
+                                color='whitesmoke'
+                                >
+                                StayEasyManila is a comprehensive hotel
+                                recommendation system that lets you discover the
+                                best hotel stay in Metro Manila, tailored to your
+                                preferences.
+                                </Text>
+                            </GridItem>
+                            <GridItem colSpan='7'>
+                                <Button
+                                bgColor='button'
+                                color='primary'
+                                minW='18.75rem'
+                                minH='4.375rem'
+                                borderRadius='3.75rem'
+                                fontSize='1.35rem'
+                                fontFamily='buttonFont'
+                                fontWeight='semibold'
+                                rightIcon={<ArrowForwardIcon />}
+                                onClick={handleDrawerClick}>
+                                    GET STARTED
+                                </Button>
+                            </GridItem>
+                        </Grid>
+                    </Box>
+                    
+                    
+                    </Box>
+                ))}
+            </Slider>
+            <Drawer 
+            isOpen={isOpen} 
+            onClose={onClose} 
+            size='sm'
             >
-                <GridItem colSpan={{base: 12, md: 6}} >
-                    <Box>
-                        <Heading
-                        fontFamily='heading'
-                        fontSize={{base: '3rem', md: '2rem', lg: '6rem'}}
-                        fontWeight='bold'
-                        textAlign={{base: 'left', md: 'left'}}
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerHeader borderBottomWidth='1px' fontSize='1.5rem' fontFamily='drawerFontHeading' fontWeight='bold'>
+                        Hotel Preferences
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <form id='hotel-form' onSubmit={handleSubmit} method='post'  >
+                        <FormControl>
+                            <FormLabel
+                            fontWeight='bold'
+                            fontFamily='drawerFontHeading'
+                            >
+                                Select your desired hotel rating:
+                            </FormLabel>
+                            <CheckboxGroup value={hotelRating}
+                            onChange={(value) => setHotelRating(value)}>
+                                <Stack 
+                                spacing='1.5rem' 
+                                direction='row'
+                                >
+                                    <Checkbox 
+                                    value='5'
+                                    colorScheme='gray'
+                                    >
+                                        5 Star
+                                    </Checkbox>
+                                    <Checkbox 
+                                    value='4'
+                                    colorScheme='gray'
+                                    >
+                                        4 Star
+                                    </Checkbox>
+                                    <Checkbox 
+                                    value='3'
+                                    colorScheme='gray'
+                                    >
+                                        3 Star
+                                    </Checkbox>
+                                </Stack>
+                            </CheckboxGroup>
+                            <FormHelperText mb='2rem'>
+                                Select one or more ratings to find hotels that meet your preferences.
+                            </FormHelperText>
+                        </FormControl>
+                        <FormControl 
+                        mt='1.5rem'>
+                            <FormLabel
+                            fontWeight='bold'
+                            fontFamily='drawerFontHeading'>
+                                Type your preferred hotel characteristics:
+                            </FormLabel>
+                            <Input 
+                            borderRadius='2.75rem' 
+                            minH='3rem' 
+                            placeholder="e.g., Luxury, Modern, Contemporary" 
+                            value={hotelCharacteristics}
+                            onChange={(e) => setHotelCharacteristics(e.target.value)}
+                            />
+                            <FormHelperText mb='2rem'>
+                                Enter characteristics that will refine your recommendations. For example: "Pet-friendly", "Eco-friendly", "Romantic getaway".
+                            </FormHelperText>
+                        </FormControl>
+                        <FormControl 
+                        mt='1.5rem'
                         >
-
-                             Find The Perfect Stay In  Metro Manila  With Ease!
-                        </Heading>
-                    </Box>
-                    <Box pt={{base: '1.40625rem', md: '2.8125rem'}}>
-                        <Text
-                        fontFamily='body'
-                        fontSize={{base: '1.5625rem', md: '1.875rem'}}
-                        fontWeight='regular'
-                        textAlign={{base: 'left', md: 'left'}}
+                            <FormLabel
+                            fontWeight='bold'
+                            fontFamily='drawerFontHeading'>
+                                Type your preferred hotel amenities:
+                            </FormLabel>
+                            <Input 
+                            borderRadius='2.75rem' 
+                            minH='3rem' 
+                            placeholder="e.g., Pool, Gym, Free Wi-Fi"
+                            value={hotelAmenities}
+                            onChange={(e) => setHotelAmenities(e.target.value)} 
+                            />
+                            <FormHelperText mb='2rem'>
+                                Provide more specific amenities for better suggestions. For example: "Spa", "Business center", "Pet-friendly".
+                            </FormHelperText>
+                        </FormControl>
+                        <FormControl 
+                        mt='1.5rem'
                         >
-                            StayEasyManila is a comprehensive hotel
-                            recommendation system that lets you discover the
-                            best hotel stay in Metro Manila, tailored to your
-                            preferences.
-                        </Text>
-                    </Box>
-                    <form
-                        action='/recommendations'
-                        method='post'
-                        onSubmit={handleSubmit}
-                        >
-                        {renderInputOrButtons()}
-                    </form>
-                </GridItem>
-                <GridItem
-                colSpan={{base: 12, md: 6}}
-                >
-                    <Box>
-                        <Slider {...settings}>
-                            {images.map((src, index) => (
-                                <Image 
-                                borderRadius='3.75rem' 
-                                key={index} src={src} 
-                                alt={`hotel-image${index}` } 
-                                alignContent={{base: 'left', md: 'left'}}
-                                />
-                            ))}
-                        </Slider>
-                    </Box>
-                </GridItem>
-            </Grid>
+                            <FormLabel
+                            fontWeight='bold'
+                            fontFamily='drawerFontHeading'>
+                                Anything else you would like to add?
+                            </FormLabel>
+                            <Input 
+                            borderRadius='2.75rem' 
+                            minH='3rem' 
+                            placeholder="e.g., Non-smoking room, Quiet location, Near Mall"
+                            value={additionalRequests}
+                            onChange={(e) => setAdditionalRequests(e.target.value)} 
+                            />
+                            <FormHelperText mb='2rem'>
+                                Specify anything else you might need or want in your hotel stay. This can include location preferences, room specifics, or other requests.
+                            </FormHelperText>
+                        </FormControl>
+                        </form>
+                    </DrawerBody>
+                    <DrawerFooter borderTopWidth='1px'>
+                        <Button type='submit' form='hotel-form' bgColor='button' color='primary' fontFamily='buttonFont' >
+                            Submit
+                        </Button>
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
         </>
     )
 }

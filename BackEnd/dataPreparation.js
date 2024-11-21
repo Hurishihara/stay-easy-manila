@@ -24,9 +24,12 @@ const getHotelDescriptions = async () => {
 const preprocess = (text) => {
     
     // Tokenize text into lowercase tokens and remove stopwords
-    const tokenizer = new natural.WordTokenizer();
-    const tokens = tokenizer.tokenize(text.toLowerCase())
-    return tokens.filter(token => !natural.stopwords.includes(token))
+    const tokens = customTokenizer(text)
+    const filteredTokens = tokens.filter(token => !natural.stopwords.includes(token))
+    return filteredTokens;
+}
+const customTokenizer = (text) => {
+    return text.toLowerCase().match(/[a-z0-9]+/g) || [];
 }
 
 let vocabulary = [];

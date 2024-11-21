@@ -2,14 +2,14 @@ import React from 'react';
 import { Box } from '@chakra-ui/react'
 import NavBar from './Navbar.jsx';
 import HeroSection from './HeroSection.jsx';
+import HomePage from './HomePage.jsx';
 
 function App () {
 
   return (
-    <Box bgColor='primary' color='white' minH='100vh'>
-      <NavBar />
-      <HeroSection />
-    </Box>
+    
+      <HomePage />
+    
   )
 }
 

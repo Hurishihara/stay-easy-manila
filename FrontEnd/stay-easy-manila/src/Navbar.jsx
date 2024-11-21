@@ -16,30 +16,38 @@ import {
     MenuDivider,
 } from '@chakra-ui/react'
 import { RxHamburgerMenu } from "react-icons/rx";
-import {Link as ReactRouterLink} from 'react-router-dom'
+import {Link as ReactRouterLink, useLocation} from 'react-router-dom'
 import { useClickStore } from './store/clickStore.js'
 
 function NavBar () {
-
+    const location = useLocation();
     const resetClicked = useClickStore(state => state.resetClicked);
 
     const handleHomeClick = () => {
         resetClicked();
     }
 
+    const isOnRecommendationPage = location.pathname.includes('/recommendations');
+    console.log(isOnRecommendationPage);
+
     return (
         <Flex
-        pl={{base: '2rem', md: '11.75rem'}}
-        pr={{base: '2rem', md: '11.75rem'}}
+        pl={{base: '2rem', md: '3rem'}}
+        pr={{base: '2rem', md: '3rem'}}
         pt='1rem'
         >
             <Box>
-                <Text
+                {!isOnRecommendationPage && (
+                    <Text
                 fontFamily='title'
+                fontWeight='bold'
+                color='fontColor'
                 fontSize={{base: '1.5625rem', md: '2.1875rem'}}
                 >
                     StayEasyManila
                 </Text>
+                )}
+                
             </Box>
             <Spacer />
             <HStack 
@@ -51,12 +59,14 @@ function NavBar () {
                 fontFamily='title'
                 fontSize='1.5625rem'
                 onClick={handleHomeClick}
+                color='fontColor'
                 >
                     Home
                 </ChakraLink>
                 <Text
                 fontFamily='title'
                 fontSize='1.5625rem'
+                color='fontColor'
                 >
                     About Us
                 </Text>

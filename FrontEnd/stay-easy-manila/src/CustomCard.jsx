@@ -1,6 +1,7 @@
 import React from 'react'
-import { Box, Heading, Badge, Image, Card, CardBody, HStack, Text, Divider, CardFooter, Button, Stack } from '@chakra-ui/react'
+import { Box, Heading, Badge, Image, Card, CardBody, HStack, Text, Divider, CardFooter, Button, Stack, AspectRatio } from '@chakra-ui/react'
 import { FaStar } from "react-icons/fa";
+
 
 const CustomCard = ({hotelName, result, description, starRating, hotelType, imagePath, onClick}) => {
     
@@ -30,7 +31,7 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
   
     const setStars = (rating) => {
       return Array.from({length: +rating}).map((_, index) => {
-        return <FaStar key={index} color='yellow'/>
+        return <FaStar key={index} color='black'/>
       })
     }
 
@@ -38,18 +39,22 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
     <>
         <Box
         onClick={onClick}
-        cursor='pointer'>
-            <Card bgColor='#CAF4FF'
-            maxW={{base: 'sm', md: 'xl'}} 
-            borderRadius='2.5rem'
-            mb={{base: '2.5rem', md: '5rem'}}
-            mt={{base: '2.5rem', md: '5rem'}}
+        cursor='pointer'
+        >
+            <Card bgColor='primary'
+            overflow='hidden'
+            borderRadius='2.1875rem'
+            p='1.5rem'
+            m='1.5rem'
+            boxShadow='0px 4px 4px rgba(0, 0, 0, 0.50)'
             >
                 <Box>
+                  <AspectRatio ratio={16/9}>
                     <Image 
                     src={`${api}${imagePath}/image1.jpg`}
-                    borderTopRadius='2.1875rem' 
+                    borderRadius='2.1875rem'
                     />
+                  </AspectRatio>
                 </Box>
                 <CardBody>
                     <Stack
@@ -57,26 +62,21 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
                     direction={{base: 'column', md: 'row'}}
                     >
                         <Heading
-                        color='primary'
-                        fontFamily='heading'
+                        color='black'
+                        fontFamily='homePageHeading'
                         fontWeight='bold'
-                        fontSize={{base: '1.25rem', md: '1.5625rem'}}
+                        fontSize={{base: '1.25rem', md: '1.5rem'}}
                         >
                             {hotelName}
                         </Heading>
                         <Box>
-                        <Badge
-                        fontFamily='body'
-                        variant='solid'
-                        colorScheme={result === 'Top Result' ? 'green' : 'gray'}
-                        >
-                            {result}
-                        </Badge>
+                        
                         </Box>
                     </Stack>
                     <Text
                     fontFamily='body'
                     fontWeight='regular'
+                    
                     mt='1.5rem'
                     fontSize={{base: '0.9rem', md: '1.2rem'}}
                     >
@@ -89,9 +89,9 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
                         {setStars(starRating)}
                         <Box>
                             <Text
-                            color='primary'
+                            
                             fontFamily='body'
-                            fontWeight='regular'
+                            fontWeight='bold'
                             fontSize={{base: '0.9rem', md: '1.2rem'}}
                             ml='0.25rem'
                             >

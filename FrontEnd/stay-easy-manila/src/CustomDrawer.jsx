@@ -22,18 +22,23 @@ import {
     SimpleGrid,
     Button,
     VStack,
-    AspectRatio
+    AspectRatio,
+    DrawerBody,
+    CardFooter
 } from '@chakra-ui/react'
 import React from 'react'
 import Slider from 'react-slick'
 import { FaCheckCircle } from "react-icons/fa";
-
+import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import src from './assets/hotelDetailsBG.png'
+import { css } from '@emotion/react';
 
 
 const CustomDrawer = ({isOpen, onClose, selectedHotel}) => {
   
 
     const api = 'http://localhost:3000'
+    
 
     const handleGetDirections = () => {
         if (navigator.geolocation) {
@@ -57,11 +62,10 @@ const CustomDrawer = ({isOpen, onClose, selectedHotel}) => {
         window.open(selectedHotel.website_link, '_blank')
     }
   
-    
+    console.log(`${api}${encodeURI(selectedHotel.image_folder_path)}/image3.jpg`)
 
   // Settings for the slider
   const settings = {
-    arrows: false,
     fade: true,
     infinite: true,
     speed: 500,
@@ -69,15 +73,19 @@ const CustomDrawer = ({isOpen, onClose, selectedHotel}) => {
     autoplay: true,
     autoplaySpeed: 3000,
     cssEase: 'linear',
+    arrows: false,
 }
 
     const settings2 = {
         arrows: false,
         dots: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        speed: 500,      
         fade: true,
+        infinite: true,
+        speed: 500,
+        waitForAnimate: false,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        cssEase: 'linear',
     }
   
     return (
@@ -89,226 +97,124 @@ const CustomDrawer = ({isOpen, onClose, selectedHotel}) => {
         placement='top'
         >
             <DrawerOverlay/>
-            <DrawerContent bgColor='primary' overflow='auto'>
-                <Grid
-                templateColumns={{base: '1fr', md: 'repeat(12, 1fr)'}}
-                pl={{base: '2rem', md: '5rem'}}
-                pr={{base: '2rem', md: '5rem'}}
-                pt={{base: '2rem', md: '5rem'}}
-                pb={{base: '2rem', md: '5rem'}}
-                >
-                    <GridItem 
-                    colSpan={{base: '12', md: '5'}}
-                    >
-                        <Slider 
-                        {...settings}>
-                            {Array.from({length: 5}).map((_, index) => (
-                                <AspectRatio 
-                                ratio={4 / 3} 
-                                key={index}
-                                >
-                                    <Image 
-                                    src={`${api}${selectedHotel.image_folder_path}/image${index + 1}.jpg`}
-                                    borderRadius='1em'
-                                    />
-                                </AspectRatio>
-                            ))}
-                        </Slider>
+            <DrawerContent overflow='auto' bgColor='#EADBC8'>
+                <DrawerCloseButton 
+                color='fontColor'
+                />
+                <Heading color='fontColor' fontFamily='homePageHeading' fontWeight='bold' mx='3rem' my='3rem'>
+                    {selectedHotel.hotel_name}
+                </Heading>
+                
+                <Grid templateColumns='repeat(12, 1fr)' gap='3rem'>
+                    <GridItem colSpan='7'>
+                        <AspectRatio ratio={15/10} >
+                        <Image src={`${api}${selectedHotel.image_folder_path}/image1.jpg`}
+                        borderRadius='1.5rem'
+                        boxShadow='0px 4px 4px rgba(0, 0, 0, 0.50)'
+                        mx='3rem' />
+                        </AspectRatio>
                     </GridItem>
-                    <GridItem 
-                    colSpan={{base: '12', md: '7'}}
-                    ml={{base: '0', md: '2rem'}}>
-                        <Box 
-                        pb={{base: '2rem', md: '3rem'}} 
-                        mt={{base: '2rem', md: '0'}}
-                        display={{base: 'flex', md: 'block'}}
-                        justifyContent={{base: 'center', md: 'flex-start'}}
-                        alignContent={{base: 'center', md: 'flex-start'}}
+                    
+                    <GridItem colSpan='5'>
+                        <Card 
+                        maxW='2xl'
+                        bgColor='primary' 
+                        align='center' 
+                        borderRadius='none' p='2rem' 
+                        boxShadow='0px 4px 4px rgba(0, 0, 0, 0.50)'
+                        mx='3rem'
                         >
-                            <Heading 
-                            fontSize={{base: '2rem', md: '3rem'}} 
-                            fontFamily='heading' 
-                            letterSpacing='0.08rem' 
-                            color='whitesmoke'
-                            >
-                                {selectedHotel.hotel_name}
-                            </Heading>
-                        </Box>
-                        <Box mb={{base: '3rem', md: '0'}}>
-                            <Text 
-                            fontSize={{base: '1.20rem', md: '1.5rem'}} 
-                            fontFamily='body' 
-                            fontWeight='regular' 
-                            letterSpacing='0.02rem' 
-                            color='whitesmoke'
-                            >
+                        <CardBody textAlign='justify'>
+                            <Text color='fontColor' fontFamily='homePageHeading' fontSize='1rem' fontWeight='regular'>
                                 {selectedHotel.hotel_short_description}
                             </Text>
-                        </Box>
-                        {selectedHotel.amenities.length === 0 && (
-                            <Stack 
-                            direction={{base: 'column', md: 'row'}} 
-                            spacing={{base: '1rem', md: '3rem'}} 
-                            pt={{base: '0', md: '2rem'}}
-                            pb={{base: '2rem', md: '0'}}>
-                            <Button
-                            onClick={handleGetDirections}
-                            minW={{base: '100%', md: '16.28125rem'}} 
-                            minH='4.375rem'
-                            bg='button'
-                            color='primary' 
-                            borderRadius='3.75rem'
-                            letterSpacing='0.09375rem'
-                            fontFamily='heading'
-                            fontWeight='semibold'>
-                                GET DIRECTIONS
-                            </Button>
-                            <Button
-                            onClick={handleVisitWebsite}
-                            minW={{base: '100%', md: '16.28125rem'}} 
-                            minH='4.375rem' 
-                            borderRadius='3.75rem'
-                            letterSpacing='0.09375rem'
-                            fontFamily='heading'
-                            fontWeight='semibold'
-                            bgColor='rgba(228, 249, 255, 0.7)'
-                            color='white'>
-                                VISIT WEBSITE
-                            </Button>
-                            </Stack>
-                        )}
-                               
-                    </GridItem>                    
-                    <GridItem 
-                    colSpan={{base: '12', md: selectedHotel.amenities.length > 0 ? '5' : '12'}} 
-                    pb='4rem'
-                    >
-                        <Flex 
-                        justifyContent='center' 
-                        alignItems='center' 
-                        pb='2rem'
-                        >
-                            <Heading 
-                            fontSize={{base: '2rem', md: '2.5rem'}} 
-                            fontFamily='heading' 
-                            fontWeight='bold' 
-                            letterSpacing='0.08rem' 
-                            color='whitesmoke' 
-                            opacity={0.7}
-                            >
-                                Reviews
-                            </Heading>
-                        </Flex>
-                        <OrderedList>
-                            <Slider 
-                            {...settings2}
-                            >
-                            {selectedHotel.reviews.map((review, index) => (
-                                <ListItem 
-                                key={index}>
-                                    <Card 
-                                    bgColor='#1a2632' 
-                                    variant='elevate'
-                                    >
-                                        <CardBody>
-                                            <Text 
-                                            fontFamily='body' 
-                                            color='whitesmoke' 
-                                            fontSize={{base: '1.15rem', md: '1.25rem'}} 
-                                            fontWeight='regular' 
-                                            letterSpacing='0.02rem'
-                                            >
-                                                {review}
-                                            </Text>
-                                        </CardBody>
-                                    </Card>
-                                </ListItem>
-                            ))}
-                            </Slider>
-                        </OrderedList>
-                    </GridItem>
-                    <GridItem 
-                    colSpan={{base: '12', md: '7'}} 
-                    pl={{base: '0', md: '2rem'}}
-                    >
-                        {selectedHotel.amenities.length > 0 && (
-                            <>
-                                <Box
-                                display={{base: 'flex', md: 'block'}}
-                                justifyContent={{base: 'center', md: 'flex-start'}}
-                                alignContent={{base: 'center', md: 'flex-start'}}>
-                                <Heading 
-                                fontSize={{base: '2rem', md: '2.5rem'}} 
-                                fontFamily='heading' 
-                                fontWeight='bold' 
-                                letterSpacing='0.08rem' 
-                                color='whitesmoke' 
-                                opacity={0.7}
-                                mb='2rem'>
-                                    Facilities
-                                </Heading>
-                                </Box>
-                                <SimpleGrid
-                                columns='2'
-                                gap='0.75rem'
-                                
-                                >
-                                    {selectedHotel.amenities.map((amenity, index) => (
-                                        <List 
-                                        fontFamily='body' 
-                                        fontWeight='regular' 
-                                        fontSize={{base: '1.25rem', md: '1.5625rem' }}
-                                        color='whitesmoke' 
-                                        letterSpacing='0.02rem'>
-                                            <ListItem key={index}>
-                                                <ListIcon 
-                                                as={FaCheckCircle} 
-                                                color='gray.200'
-                                                />
-                                                {amenity}
-                                            </ListItem>
-                                        </List>
-                                    ))}
-                                </SimpleGrid>
-                                <Stack mt='3rem' 
-                                direction={{base: 'column', md: 'row'}} 
-                                spacing={{base: '1rem', md: '3rem'}}
-                                >
+                                <Box display='flex' justifyContent='center' alignItems='center'>
                                 <Button
                                 onClick={handleGetDirections}
-                                minW={{base: '100%', md: '16.28125rem'}}
-                                minH='4.375rem' 
-                                borderRadius='3.75rem'
+                                minW='14rem'
+                                minH='3.5rem'
                                 bg='button'
                                 color='primary'
-                                letterSpacing='0.09375rem'
-                                fontFamily='heading'
+                                borderRadius='3.75rem'
+                                fontFamily='buttonFont'
                                 fontWeight='semibold'
+                                mt='2rem'
+                                mx='1rem'
+                                
                                 >
                                     GET DIRECTIONS
                                 </Button>
                                 <Button
                                 onClick={handleVisitWebsite}
-                                minW={{base: '100%', md: '16.28125rem'}}
-                                minH='4.375rem' 
+                                minW='14rem'
+                                minH='3.5rem'
+                                bg='button'
+                                color='primary'
                                 borderRadius='3.75rem'
-                                letterSpacing='0.09375rem'
-                                fontFamily='heading'
+                                fontFamily='buttonFont'
                                 fontWeight='semibold'
-                                bgColor='rgba(228, 249, 255, 0.7)'
-                                color='white'
+                                mt='2rem'
+                                mx='1rem'
                                 >
                                     VISIT WEBSITE
                                 </Button>
-                                </Stack>
-                            </>
-                        )}
+                                </Box>
+                        </CardBody>
+                    </Card> 
                     </GridItem>
-                    
+                    <GridItem 
+                    colSpan='12' 
+                    bgImage={`url(${api}${encodeURI(selectedHotel.image_folder_path)}/image3.jpg)`} 
+                    bgPosition='center'
+                    bgRepeat='no-repeat'
+                    h='100vh' 
+                    backgroundSize='cover'
+                    position='relative'
+                    >
+                         <Box position='absolute'
+                         top='0'
+                         left='0'
+                         right='0'
+                         bottom='0'
+                         backgroundColor="rgba(0, 0, 0, 0.3)"
+                         zIndex={1}
+                         />
+                         
+                        <Stack direction='column' position='relative' zIndex={1} gap='3rem' mt='10rem'>
+                            <Heading 
+                            color='primary' 
+                            alignContent='center'
+                            justifyContent='center'
+                            align='center'
+                            fontSize='3rem'
+                            fontWeight='bold'
+                            fontFamily='homePageHeading'
+                            letterSpacing='0.09rem'
+                            >
+                                Reviews
+                            </Heading>
+                            
+                            <Slider {...settings2}>
+                            {selectedHotel.reviews.map((review) => (
+                                <Box maxWidth="50%" ml='27rem' overflow='hidden' >
+                                    <Text 
+                                    color='primary' 
+                                    fontFamily='reviewFont'
+                                    as='i'
+                                    fontSize='1.5rem'
+                                    fontWeight='regular'
+                                    letterSpacing='0.02rem'
+                                    textAlign='center'
+                                    >
+                                    {review}
+                                    </Text>
+                                </Box>
+                            ))}
+                            </Slider>
+                        </Stack>
+                    </GridItem>           
                 </Grid>
-                <DrawerCloseButton 
-                color='white'
-                />
+                
             </DrawerContent>
         </Drawer>
     </>
