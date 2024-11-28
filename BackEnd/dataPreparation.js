@@ -32,47 +32,6 @@ const customTokenizer = (text) => {
     return text.toLowerCase().match(/[a-z0-9]+/g) || [];
 }
 
-let vocabulary = [];
-
-const getVocabulary = () => {
-    
-    if (vocabulary.length === 0) {
-        const vocabSet = new Set();
-        for (let index = 0; index < tfidf.documents.length; index++) {
-            const terms = tfidf.listTerms(index);
-            terms.forEach(term => {
-                vocabSet.add(term.term);
-            });
-        }
-        vocabulary = Array.from(vocabSet);
-    }
-    return vocabulary;
-}
-
-// Function to get TF-IDF Scores for all documents
-const getTfIdfScores = () => {
-    const vocabularyLength = getVocabulary().length;
-    const allScores = [];
-    for (let i = 0; i < tfidf.documents.length; i++) {
-        const documentScores = new Array(vocabularyLength).fill(0);
-        const terms = tfidf.listTerms(i)
-        // Populated
-        //console.log(`Terms for Document ${i}:`, terms);
-        terms.forEach(term => {
-            const termIndex = getVocabulary().indexOf(term.term);
-            if (termIndex !== -1) {
-                documentScores[termIndex] = term.tfidf
-            }
-        });
-        allScores.push(documentScores)
-        console.log(`Scores for Document ${i}:`, documentScores);
-    }
-    
-    return allScores;
-}
-
-
-
 const saveTfIdfModel = () => {
     const tfidfData = JSON.stringify(tfidf);
     fs.writeFileSync('tfidfModel.json', tfidfData);

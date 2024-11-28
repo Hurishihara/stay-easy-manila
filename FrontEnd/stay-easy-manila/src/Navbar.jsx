@@ -77,7 +77,7 @@ function NavBar () {
                 aria-label='Open Menu'
                 icon={<RxHamburgerMenu />}
                 variant='unstyled'
-                color='white'
+                color='fontColor'
                 display={{base: 'flex', md: 'none'}}
                
                 />

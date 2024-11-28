@@ -40,12 +40,13 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
         <Box
         onClick={onClick}
         cursor='pointer'
+        
         >
             <Card bgColor='primary'
             overflow='hidden'
             borderRadius='2.1875rem'
-            p='1.5rem'
-            m='1.5rem'
+            p={{base: '1rem', md: '1.5rem'}}
+            m={{base: '0.5rem', md: '1.5rem'}}
             boxShadow='0px 4px 4px rgba(0, 0, 0, 0.50)'
             >
                 <Box>
@@ -57,22 +58,16 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
                   </AspectRatio>
                 </Box>
                 <CardBody>
-                    <Stack
-                    spacing={{base: '0.35rem', md: '0.65rem'}}
-                    direction={{base: 'column', md: 'row'}}
-                    >
-                        <Heading
-                        color='black'
-                        fontFamily='homePageHeading'
-                        fontWeight='bold'
-                        fontSize={{base: '1.25rem', md: '1.5rem'}}
-                        >
-                            {hotelName}
-                        </Heading>
-                        <Box>
+                    <Heading
+                      color='black'
+                      fontFamily='homePageHeading'
+                      fontWeight='bold'
+                      fontSize={{base: '1.25rem', md: '1.5rem'}}
+                      >
+                        {hotelName}
+                    </Heading>
                         
-                        </Box>
-                    </Stack>
+                   
                     <Text
                     fontFamily='body'
                     fontWeight='regular'

@@ -60,7 +60,7 @@ const initializedKNN = async () => {
     }
     console.log(`Number of Components: ${nComponents}`); // Logs the number of components
     const reducedDataset = pca.predict(train_dataset, { nComponents: 98 }).to2DArray(); // Reduces the dataset using PCA
-    const knn = new KNN(reducedDataset, train_labels, { k: 15}); // Instantiates the KNN Model
+    const knn = new KNN(reducedDataset, train_labels, { k: 5}); // Instantiates the KNN Model
     return knn;
 }
 

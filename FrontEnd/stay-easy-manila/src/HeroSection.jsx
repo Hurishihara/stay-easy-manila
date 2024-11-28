@@ -138,35 +138,37 @@ function HeroSection () {
         
             <Slider {...settings}>
                 {images.map((src, index) => (
-                   <Box p='2rem'>
+                   <Box p={{base: '1rem', md: '2rem'}} >
                     <Box 
                     key={index}
                     backgroundImage={`url(${src})`}
                     backgroundSize='cover'
+                    backgroundPosition='center'
                     borderRadius='1.75rem'
-                    h='90vh'
+                    h={{base: '90vh', md: '90vh'}}
                     
                     >
                         <Grid
                         templateColumns='repeat(12, 1fr)'
-                        p='5rem'
-                        gap='5rem'
+                        p={{base: '2rem', md: '5rem'}}
+                        gap={{base: '2rem', md: '5rem'}}
                         >
-                            <GridItem colSpan='8'>
+                            <GridItem colSpan={{base: 12, md: 8}} >
                                 <Heading
                                 fontFamily='homePageHeading'
-                                fontSize='5rem'
+                                fontSize={{base: '2rem', md: '5rem'}}
                                 color='whitesmoke'
                                 fontWeight='bold'
-                                lineHeight='5rem'
+                                lineHeight={{base: '2.5rem', md: '5rem'}}
+                                mt={{base: '14rem', md: '0'}}
                                 >
                                     Find the Perfect Stay in Metro Manila with Ease!
                                 </Heading>
                             </GridItem>
-                            <GridItem colSpan='7'>
+                            <GridItem colSpan={{base: 12, md: 7}}>
                                 <Text
                                 fontFamily='body'
-                                fontSize='1.50rem'
+                                fontSize={{base: '1rem', md: '1.5rem'}}
                                 as='i'
                                 color='whitesmoke'
                                 >
@@ -176,14 +178,14 @@ function HeroSection () {
                                 preferences.
                                 </Text>
                             </GridItem>
-                            <GridItem colSpan='7'>
+                            <GridItem colSpan={{base: 12, md: 7}}>
                                 <Button
                                 bgColor='button'
                                 color='primary'
-                                minW='18.75rem'
-                                minH='4.375rem'
+                                minW={{base: '13rem', md: '18.75rem'}}
+                                minH={{base: '3rem', md: '4.375rem'}}
                                 borderRadius='3.75rem'
-                                fontSize='1.35rem'
+                                fontSize={{base: '1rem', md: '1.35rem'}}
                                 fontFamily='buttonFont'
                                 fontWeight='semibold'
                                 rightIcon={<ArrowForwardIcon />}

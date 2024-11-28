@@ -49,17 +49,30 @@ const getTfIdfVector = async (query) => {
 
     // Preprocesses the User's Query
     const preProcessedUserQuery = preprocess(query);  
-    
+    console.log('Preprocessed Query:', preProcessedUserQuery)
     // Initialized an empty array to be populated with TF-IDF Scores of the User's Query
-    const queryVector = new Array(vocab.length).fill(0)
+    //const queryVector = new Array(vocab.length).fill(0)
     
+    const termScores = [] 
+    
+
+    preProcessedUserQuery.forEach(term => {
+        tfidf.tfidfs(term, (docIndex, measure) => {
+           termScores.push(measure)
+        })
+    })
+
+       
+
     // Computes the TF-IDF Scores for the User's Query
-     tfidf.tfidfs(preProcessedUserQuery, (i, measure) => {
+    /* 
+    tfidf.tfidfs(preProcessedUserQuery, (i, measure) => {
         queryVector[i] = measure
     })
-    return queryVector;
+    */
+    return termScores.concat(new Array(vocab.length - termScores.length).fill(0));
 }
 
-//console.log(await getTfIdfVector('Looking for a luxurious hotel with modern amenities'))// Test the function) 
+//console.log(await getTfIdfVector('Looking luxurious Glamorous'))// Test the function) 
 export { getTfIdfVector, getVocabulary, initializedTfIdf } // Exports the function
 
