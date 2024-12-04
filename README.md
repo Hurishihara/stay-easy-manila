@@ -10,10 +10,12 @@ The system analyzes user preferences and recommends hotels based on the similari
    git clone https://github.com/Hurishihara/stayeasymanila.git
    cd stayeasymanila
 
-2. Install the dependencies:
+2. Install the dependencies for frontend and backend:
+   ``` bash
    npm install
 
 3. Start the server:
+   ``` bash
    npm run dev (frontend)
    npm run start (backend)
 
