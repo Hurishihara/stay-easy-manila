@@ -4,7 +4,6 @@ import { PCA } from "ml-pca";
 
 
 const tfidf = await initializedTfIdf();
-const labels = await getHotelNames();
 const hotelScores = getTfIdfScores(tfidf);
 const pca = new PCA(hotelScores);
 
@@ -46,7 +45,8 @@ const cosineSimilarity = (vec1, vec2) => {
 }
 
 // Function to predict the top result
-const predictionSimilarResult = async (query) => {
+const predictionSimilarResult = async (query, rating) => {
+    const labels = await getHotelNames(rating);
     const userQueryVector = await getTfIdfVector(query);
     const reducedUserQueryVector = pca.predict([userQueryVector], {nComponents: numComponents}).to1DArray();
     
@@ -59,7 +59,7 @@ const predictionSimilarResult = async (query) => {
         
     });
 
-   const topScores = scores.sort((a, b) => b.score - a.score).slice(0, 15);
+   const topScores = scores.sort((a, b) => b.score - a.score).slice(0, 10);
     
    const results = topScores.map(({ hotel }) => hotel);
     return results;

@@ -14,7 +14,8 @@ router.get('/', (req, res) => {
 router.post('/recommendations', async (req, res) => {
     try {
         const { hotelRating, input } = req.body;
-        const recommendations = await getRecommendations(input);
+        
+        const recommendations = await getRecommendations(input, hotelRating);
         res.status(200).json({message: 'Recommendations fetched successfully', data: recommendations});
     }
     catch(err) {

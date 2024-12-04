@@ -1,13 +1,22 @@
+import { main } from './dataPreparation.js';
 import { fetchSimilarResultsHotel, fetchTopResultHotel } from "./db.js";
-import { predictionTopResult } from "./knnModel.js";
+import { predictionTopResult, initializedKNN } from "./knnModel.js";
 import { predictionSimilarResult } from "./similarity.js";
+import { initializedTfIdf } from './vectorization.js';
 
-const getRecommendations =  async (query) => {
+const getRecommendations =  async (query, rating = ['5.0', '4.0', '3.0']) => {
     
     try {
-        // Gets the predicted result after passing the user's query TF-IDF as test dataset
-        const topResult = await predictionTopResult(query);
-        const similarResult = (await predictionSimilarResult(query)).filter(hotel => !topResult.includes(hotel));
+
+        await Promise.all([
+            main(rating),
+            initializedTfIdf(rating)
+        ])
+
+        //Gets the predicted result after passing the user's query TF-IDF as test dataset
+        const topResult = await predictionTopResult(query, rating);
+        console.log('Top Result:', topResult);
+        const similarResult = (await predictionSimilarResult(query, rating)).filter(result => result !== topResult);
         const allResult = await Promise.all([fetchTopResultHotel(topResult), fetchSimilarResultsHotel(similarResult)]);
         
         return allResult;

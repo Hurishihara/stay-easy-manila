@@ -2,22 +2,23 @@ import KNN from 'ml-knn';
 import { PCA } from 'ml-pca';
 import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization.js';
 import { fetchHotel } from './db.js';
+import e from 'cors';
 
-
-
-const getHotelNames = async () => {
+const getHotelNames = async (rating) => {
     
     try {
         const hotelName = await fetchHotel(); // Get the hotel names from the database
-        const listOfHotelNames = hotelName.map(row => row.hotel_name); // Map the results to get only the hotel names
-        return listOfHotelNames; // Return the list of hotel names
+        if (Array.isArray(rating) && rating.length > 0) {
+            return hotelName.filter(hotel => rating.includes(hotel.stars)).map(row => row.hotel_name); // Filter the hotel names based on the rating
+        }
+        else {
+            return hotelName.map(row => row.hotel_name); // Return all the hotel names
+        }
     }
     catch (err) {
         throw new Error(err) // Throw an error if there's an issue
     };
 };
-
-
 
 const getTfIdfScores = (tfidf) => {
     const vocab = getVocabulary();
@@ -39,14 +40,33 @@ const getTfIdfScores = (tfidf) => {
 }
     
 
-let pca;
-const initializedKNN = async () => {
-    const tfidf = await initializedTfIdf(); // Initializes the TF-IDF Model
-    const train_labels = await getHotelNames(); // Gets the hotel names to be used as labels
-    const train_dataset = getTfIdfScores(tfidf); // Gets the TF-IDF Scores for all documents
+// Cosine Similarity Function
+const cosineSimilarity = (vec1, vec2) => {
+     
+    // Check if the vectors are arrays
+    vec1 = Array.isArray(vec1) ? vec1 : Array.from(vec1);
+    vec2 = Array.isArray(vec2) ? vec2 : Array.from(vec2);
 
+    const dotProduct = vec1.reduce((sum, value, index) => sum + value * vec2[index], 0);
+    const magnitude1 = Math.sqrt(vec1.reduce((sum, value) => sum + Math.pow(value, 2), 0))
+    const magnitude2 = Math.sqrt(vec2.reduce((sum, value) => sum + Math.pow(value, 2), 0))
+    
+    // Check if the magnitude is zero
+    if(magnitude1 === 0 || magnitude2 === 0) {
+        return 0;
+    }
+    return dotProduct / (magnitude1 * magnitude2);
+}
+
+let pca;
+const initializedKNN = async (rating) => {
+    const tfidf = await initializedTfIdf(rating); // Initializes the TF-IDF Model
+    const train_labels = await getHotelNames(rating); // Gets the hotel names to be used as labels
+    const train_dataset = getTfIdfScores(tfidf); // Gets the TF-IDF Scores for all documents
     pca = new PCA(train_dataset); // Instantiates the PCA Model
+    
     const explainedVariance = pca.getExplainedVariance(); // Gets the explained variance
+    
     let cumulativeVariance = 0; // Initializes the cumulative variance
     let nComponents = 0; // Initializes the number of components
     
@@ -58,20 +78,21 @@ const initializedKNN = async () => {
             break;
         }
     }
-    console.log(`Number of Components: ${nComponents}`); // Logs the number of components
-    const reducedDataset = pca.predict(train_dataset, { nComponents: 98 }).to2DArray(); // Reduces the dataset using PCA
-    const knn = new KNN(reducedDataset, train_labels, { k: 5}); // Instantiates the KNN Model
-    return knn;
+    const reducedDataset = pca.predict(train_dataset, { nComponents: nComponents }).to2DArray(); // Reduces the dataset using PCA
+    const knn = new KNN(reducedDataset, train_labels, { k: 9, distance: cosineSimilarity }); // Instantiates the KNN Model
+    return { knn, nComponents};
 }
 
-const predictionTopResult = async (query) => {
-    const knn = await initializedKNN(); // Get the knn model
+const predictionTopResult = async (query, rating) => {
+    const { knn, nComponents } = await initializedKNN(rating); // Get the knn model
     const userQueryVector = await getTfIdfVector(query); // Get the TF-IDF Vector for the user's query
-    const reduceQueryVector = pca.predict([userQueryVector], {nComponents: 98}).to1DArray() // Reduce the query vector using PCA
+    const reduceQueryVector = pca.predict([userQueryVector], {nComponents: nComponents }).to1DArray() // Reduce the query vector using PCA
     
     const result = knn.predict(reduceQueryVector); // Predict the result
     return result;
     
 }
 
- export { predictionTopResult, getHotelNames, getTfIdfScores };
+//console.log(await predictionTopResult('Luxurious hotel contemporary design', ['4.0']));
+
+ export { predictionTopResult, getHotelNames, getTfIdfScores, initializedKNN };

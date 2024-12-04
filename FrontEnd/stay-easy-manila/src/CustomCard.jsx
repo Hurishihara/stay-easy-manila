@@ -3,7 +3,7 @@ import { Box, Heading, Badge, Image, Card, CardBody, HStack, Text, Divider, Card
 import { FaStar } from "react-icons/fa";
 
 
-const CustomCard = ({hotelName, result, description, starRating, hotelType, imagePath, onClick}) => {
+const CustomCard = ({hotelName, result, description, starRating, hotelType, imagePath, onClick, key}) => {
     
     const api = 'http://localhost:3000'
     
@@ -48,6 +48,7 @@ const CustomCard = ({hotelName, result, description, starRating, hotelType, imag
             p={{base: '1rem', md: '1.5rem'}}
             m={{base: '0.5rem', md: '1.5rem'}}
             boxShadow='0px 4px 4px rgba(0, 0, 0, 0.50)'
+            key={key}
             >
                 <Box>
                   <AspectRatio ratio={16/9}>

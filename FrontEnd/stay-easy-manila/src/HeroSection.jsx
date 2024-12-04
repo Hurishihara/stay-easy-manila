@@ -109,7 +109,7 @@ function HeroSection () {
             setHotel(res.data.data)
             setTimeout(() => {
                 navigate('/ph/recommendations')
-            }, 3000)
+            }, 2000)
         }).catch((err) => {
             console.error(err)
         })
@@ -227,19 +227,19 @@ function HeroSection () {
                                 direction='row'
                                 >
                                     <Checkbox 
-                                    value='5'
+                                    value='5.0'
                                     colorScheme='gray'
                                     >
                                         5 Star
                                     </Checkbox>
                                     <Checkbox 
-                                    value='4'
+                                    value='4.0'
                                     colorScheme='gray'
                                     >
                                         4 Star
                                     </Checkbox>
                                     <Checkbox 
-                                    value='3'
+                                    value='3.0'
                                     colorScheme='gray'
                                     >
                                         3 Star

@@ -16,11 +16,14 @@ const HotelList = () => {
   
   const navigate = useNavigate()
   const { hotel } = useHotelStore()
- 
-
-
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedHotel, setSelectedHotel] = useState(null)
+
+  useEffect(() => {
+    if (!hotel || hotel.length === 0) {
+      navigate('/')
+    }
+  }, [hotel, navigate])
 
   const openDrawer = (hotelData) => {
       setSelectedHotel(hotelData)
@@ -75,7 +78,7 @@ const HotelList = () => {
         backgroundImage={`url(${src})`}
         backgroundSize='cover'
         backgroundPosition='center'
-        h='100vh'
+        h='105vh'
         overflow='hidden'
         >
 
@@ -86,7 +89,7 @@ const HotelList = () => {
           flexDirection='column' 
           justifyContent='center' 
           alignItems='center' 
-          h='100%'>
+          >
             <Heading 
             color='fontColor' 
             fontFamily='homePageHeading' 
@@ -114,9 +117,10 @@ const HotelList = () => {
           starRating={hotel[0].stars}
           hotelType={hotel[0].stars}
           imagePath={hotel[0].image_folder_path}
-          onClick={() => openDrawer(hotel[0])} 
+          onClick={() => openDrawer(hotel[0])}
+          key={0}
           />
-          {hotel[1].map((item) => (
+          {hotel[1].map((item, index) => (
           <CustomCard
           hotelName={item.hotel_name}
           result='Similar Results'
@@ -125,6 +129,7 @@ const HotelList = () => {
           hotelType={item.stars}
           imagePath={item.image_folder_path}
           onClick={() => openDrawer(item)}
+          key={index + 1}
           />
         ))}
         </Slider>

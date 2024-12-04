@@ -1,15 +1,15 @@
 import natural from 'natural'
 // Imports the TF-IDF Model and the preprocess function
-import { preprocess, loadTfIdfModel, main } from './dataPreparation.js';
+import { preprocess, main } from './dataPreparation.js';
 
 // Imports the natural library's TF-IDF class
 const TfIdf = natural.TfIdf; 
 
 // Function to initialize the TF-IDF Model
-const initializedTfIdf = async () => {
+const initializedTfIdf = async (rating) => {
    
     // Calls the main function to get the TF-IDF Model
-    const tfidfRawData = await main(); 
+    const tfidfRawData = await main(rating); 
     
     if (!tfidfRawData) {
         throw new Error("TF-IDF Model not initialized. Please check the main function")
@@ -51,26 +51,14 @@ const getTfIdfVector = async (query) => {
     const preProcessedUserQuery = preprocess(query);  
     console.log('Preprocessed Query:', preProcessedUserQuery)
     // Initialized an empty array to be populated with TF-IDF Scores of the User's Query
-    //const queryVector = new Array(vocab.length).fill(0)
+    const queryVector = new Array(vocab.length).fill(0)
     
-    const termScores = [] 
-    
-
-    preProcessedUserQuery.forEach(term => {
-        tfidf.tfidfs(term, (docIndex, measure) => {
-           termScores.push(measure)
-        })
-    })
-
-       
 
     // Computes the TF-IDF Scores for the User's Query
-    /* 
     tfidf.tfidfs(preProcessedUserQuery, (i, measure) => {
         queryVector[i] = measure
     })
-    */
-    return termScores.concat(new Array(vocab.length - termScores.length).fill(0));
+    return  queryVector;
 }
 
 //console.log(await getTfIdfVector('Looking luxurious Glamorous'))// Test the function) 
