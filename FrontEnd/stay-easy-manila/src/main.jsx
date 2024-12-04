@@ -12,10 +12,11 @@ import App from './App.jsx'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import HotelList from './HotelList.jsx'
+import ProtectedRoute from '../ProtectedRoute.jsx'
 
 const router = createBrowserRouter([
   {path: '/', element: <App />},
-  {path: '/ph/recommendations', element: <HotelList/>}
+  {element: <ProtectedRoute /> , children: [{ path: '/ph/recommendations', element: <HotelList /> }]},
 ])
 
 const theme = extendTheme({

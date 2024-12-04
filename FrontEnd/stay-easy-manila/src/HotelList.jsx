@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import NavBar from './Navbar.jsx'
-import { Box, Flex, Heading, Stack, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Heading, Text, useDisclosure } from '@chakra-ui/react'
 import { useHotelStore } from './store/hotelStore.js'
-import { FaStar } from "react-icons/fa";
 import CustomCard from './CustomCard.jsx'
 import CustomDrawer from './CustomDrawer.jsx'
-import { useNavigate } from 'react-router-dom'
 import src from './assets/recommendationsBG.png'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
+
 
 const HotelList = () => {
   
-  const navigate = useNavigate()
   const { hotel } = useHotelStore()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedHotel, setSelectedHotel] = useState(null)
 
-  useEffect(() => {
-    if (!hotel || hotel.length === 0) {
-      navigate('/')
-    }
-  }, [hotel, navigate])
 
   const openDrawer = (hotelData) => {
       setSelectedHotel(hotelData)
@@ -112,7 +104,6 @@ const HotelList = () => {
         <Slider {...settings}>
           <CustomCard 
           hotelName={hotel[0].hotel_name}
-          result='Top Result'
           description={hotel[0].hotel_short_description}
           starRating={hotel[0].stars}
           hotelType={hotel[0].stars}
@@ -123,7 +114,6 @@ const HotelList = () => {
           {hotel[1].map((item, index) => (
           <CustomCard
           hotelName={item.hotel_name}
-          result='Similar Results'
           description={item.hotel_short_description}
           starRating={item.stars}
           hotelType={item.stars}

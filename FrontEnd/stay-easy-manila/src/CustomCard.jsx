@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, Heading, Badge, Image, Card, CardBody, HStack, Text, Divider, CardFooter, Button, Stack, AspectRatio } from '@chakra-ui/react'
+import { Box, Heading, Image, Card, CardBody, HStack, Text, AspectRatio } from '@chakra-ui/react'
 import { FaStar } from "react-icons/fa";
 
 
-const CustomCard = ({hotelName, result, description, starRating, hotelType, imagePath, onClick, key}) => {
+const CustomCard = ({hotelName, description, starRating, hotelType, imagePath, onClick, key}) => {
     
     const api = 'http://localhost:3000'
     

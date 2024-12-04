@@ -6,17 +6,11 @@ import {
     Button,
     Text,
     Heading,
-    Image,
-    ButtonGroup,
     Input,
-    Spinner,
-    Flex,
     Grid,
     GridItem,
     Stack,
     useToast,
-    chakra,
-    AspectRatio,
     useDisclosure,
     Drawer,
     DrawerOverlay,
@@ -35,7 +29,6 @@ import { ArrowForwardIcon } from '@chakra-ui/icons'
 import images from './images'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useClickStore } from './store/clickStore.js';
 import { useHotelStore } from './store/hotelStore.js';
 import { useNavigate } from 'react-router-dom';
 import { motion, isValidMotionProp } from 'framer-motion';
@@ -43,8 +36,6 @@ import { motion, isValidMotionProp } from 'framer-motion';
 
 function HeroSection () {
     
-    // Store for the click state
-    const { isClicked, setIsClicked } = useClickStore()
     const { setHotel } = useHotelStore()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [hotelRating, setHotelRating] = useState([])

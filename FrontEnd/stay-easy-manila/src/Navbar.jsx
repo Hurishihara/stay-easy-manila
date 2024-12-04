@@ -1,9 +1,6 @@
 import {
-    Container,
     Flex,
-    Grid,
     HStack,
-    Heading,
     Spacer,
     Text,
     Box,
@@ -17,18 +14,17 @@ import {
 } from '@chakra-ui/react'
 import { RxHamburgerMenu } from "react-icons/rx";
 import {Link as ReactRouterLink, useLocation} from 'react-router-dom'
-import { useClickStore } from './store/clickStore.js'
+import { useHotelStore } from './store/hotelStore.js';
 
 function NavBar () {
     const location = useLocation();
-    const resetClicked = useClickStore(state => state.resetClicked);
+    const { clearHotel } = useHotelStore()
 
     const handleHomeClick = () => {
-        resetClicked();
+        clearHotel();
     }
 
     const isOnRecommendationPage = location.pathname.includes('/recommendations');
-    console.log(isOnRecommendationPage);
 
     return (
         <Flex
