@@ -82,21 +82,4 @@ const fetchTopResultHotel = async (hotelName) => {
     }
 }
 
-const hotelNames = [
-    'The Mini Suites Eton Tower Makati',
-    'Vivere Hotel',
-    'Dusit Thani Manila',
-    'New World Makati Hotel',
-    "I'M Hotel",
-    'Makati Shangri-La',
-    'The Peninsula Manila',
-    'Manila Marriott Hotel',
-    'Fairmont Makati',
-    'The Manila Hotel',
-    'Solaire Resort',
-    'Conrad Manila',
-    'Grand Hyatt Manila',
-    'Raffles Makati'
-  ]
-
 export { fetchSimilarResultsHotel, fetchTopResultHotel };
