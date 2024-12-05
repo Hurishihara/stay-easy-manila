@@ -1,5 +1,5 @@
 import { getHotelNames, getTfIdfScores, normalizeTfIdfDataset, normalize } from "./knnModel.js";
-import { getTfIdfVector, initializedTfIdf, getVocabulary } from "./vectorization.js";
+import { getTfIdfVector, initializedTfIdf } from "./vectorization.js";
 import { PCA } from "ml-pca";
 
 
@@ -54,7 +54,7 @@ const predictionSimilarResult = async (query, rating) => {
     
     const normalizeHotelScores= normalizeTfIdfDataset(hotelScores);
     const reducedHotelScores = pca.predict(normalizeHotelScores, {nComponents: numComponents}).to2DArray();
-    //console.log(reducedUserQueryVector)
+    
     const scores = labels.map((label, index) => {
         const similarity = cosineSimilarity(reducedUserQueryVector, reducedHotelScores[index]);
         //console.log(`Similarity between ${query} and ${label}: ${similarity}`);

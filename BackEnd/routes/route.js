@@ -1,8 +1,8 @@
 import express from 'express';
 import en from 'dictionary-en'
 import nspell from 'nspell'
-import { getRecommendations } from '../recommendation.js'
-import { getVocabulary } from '../vectorization.js'
+import { getRecommendations } from '../ml_pipeline/recommendation.js'
+import { getVocabulary } from '../ml_pipeline/vectorization.js'
 const router = express.Router();
 const spell = nspell(en)
 

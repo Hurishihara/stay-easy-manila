@@ -49,7 +49,6 @@ const getTfIdfVector = async (query) => {
 
     // Preprocesses the User's Query
     const preProcessedUserQuery = preprocess(query);  
-    console.log('Preprocessed Query:', preProcessedUserQuery)
     // Initialized an empty array to be populated with TF-IDF Scores of the User's Query
     const queryVector = new Array(vocab.length).fill(0)
     
@@ -61,6 +60,6 @@ const getTfIdfVector = async (query) => {
     return  queryVector;
 }
 
-//console.log(await getTfIdfVector('Looking luxurious Glamorous'))// Test the function) 
+
 export { getTfIdfVector, getVocabulary, initializedTfIdf } // Exports the function
 

@@ -1,8 +1,8 @@
 import KNN from 'ml-knn';
 import { PCA } from 'ml-pca';
 import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization.js';
-import { fetchHotel } from './db.js';
-import e from 'cors';
+import { fetchHotel } from '../db/db.js';
+
 
 const getHotelNames = async (rating) => {
     
@@ -76,10 +76,8 @@ const initializedKNN = async (rating) => {
     const train_dataset = getTfIdfScores(tfidf); // Gets the TF-IDF Scores for all documents
     
     const normalizeDataset = normalizeTfIdfDataset(train_dataset); // Normalizes the dataset
-    console.log(normalizeDataset)
+   
     pca = new PCA(normalizeDataset); // Instantiates the PCA Model
-
-    //pca = new PCA(train_dataset); // Instantiates the PCA Model
     
     const explainedVariance = pca.getExplainedVariance(); // Gets the explained variance
     
@@ -105,10 +103,8 @@ const predictionTopResult = async (query, rating) => {
     const userQueryVector = await getTfIdfVector(query); // Get the TF-IDF Vector for the user's query
     const normalizeQueryVector = normalize(userQueryVector); // Normalize the query vector
     const reduceQueryVector = pca.predict([normalizeQueryVector], {nComponents: nComponents }).to1DArray() // Reduce the query vector using PCA
-    //console.log(normalizeQueryVector)
     const result = knn.predict(reduceQueryVector); // Predict the result
     return result;
-    
 }
 
 //console.log(await predictionTopResult('Luxurious hotel with spa business centre fitness centre and modern amenities contemporary design', ['4.0']));
