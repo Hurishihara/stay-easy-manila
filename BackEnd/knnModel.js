@@ -38,7 +38,18 @@ const getTfIdfScores = (tfidf) => {
     }
     return allScores;
 }
-    
+
+// Min-Max Normalization Function
+const normalize = (data) => {
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    return data.map(value => (value -min) / (max - min)) // Scale values to [0, 1]
+}
+
+const normalizeTfIdfDataset = (dataset) => {
+    return dataset.map(document => normalize(document));
+}
+
 
 // Cosine Similarity Function
 const cosineSimilarity = (vec1, vec2) => {
@@ -63,7 +74,12 @@ const initializedKNN = async (rating) => {
     const tfidf = await initializedTfIdf(rating); // Initializes the TF-IDF Model
     const train_labels = await getHotelNames(rating); // Gets the hotel names to be used as labels
     const train_dataset = getTfIdfScores(tfidf); // Gets the TF-IDF Scores for all documents
-    pca = new PCA(train_dataset); // Instantiates the PCA Model
+    
+    const normalizeDataset = normalizeTfIdfDataset(train_dataset); // Normalizes the dataset
+    console.log(normalizeDataset)
+    pca = new PCA(normalizeDataset); // Instantiates the PCA Model
+
+    //pca = new PCA(train_dataset); // Instantiates the PCA Model
     
     const explainedVariance = pca.getExplainedVariance(); // Gets the explained variance
     
@@ -78,7 +94,8 @@ const initializedKNN = async (rating) => {
             break;
         }
     }
-    const reducedDataset = pca.predict(train_dataset, { nComponents: nComponents }).to2DArray(); // Reduces the dataset using PCA
+    const reducedDataset = pca.predict(normalizeDataset, { nComponents: nComponents }).to2DArray(); // Reduces the dataset using PCA
+    
     const knn = new KNN(reducedDataset, train_labels, { k: 9, distance: cosineSimilarity }); // Instantiates the KNN Model
     return { knn, nComponents};
 }
@@ -86,13 +103,14 @@ const initializedKNN = async (rating) => {
 const predictionTopResult = async (query, rating) => {
     const { knn, nComponents } = await initializedKNN(rating); // Get the knn model
     const userQueryVector = await getTfIdfVector(query); // Get the TF-IDF Vector for the user's query
-    const reduceQueryVector = pca.predict([userQueryVector], {nComponents: nComponents }).to1DArray() // Reduce the query vector using PCA
-    
+    const normalizeQueryVector = normalize(userQueryVector); // Normalize the query vector
+    const reduceQueryVector = pca.predict([normalizeQueryVector], {nComponents: nComponents }).to1DArray() // Reduce the query vector using PCA
+    //console.log(normalizeQueryVector)
     const result = knn.predict(reduceQueryVector); // Predict the result
     return result;
     
 }
 
-//console.log(await predictionTopResult('Luxurious hotel contemporary design', ['4.0']));
+//console.log(await predictionTopResult('Luxurious hotel with spa business centre fitness centre and modern amenities contemporary design', ['4.0']));
 
- export { predictionTopResult, getHotelNames, getTfIdfScores, initializedKNN };
+ export { predictionTopResult, getHotelNames, getTfIdfScores, initializedKNN, normalizeTfIdfDataset, normalize };

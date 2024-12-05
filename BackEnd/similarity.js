@@ -1,4 +1,4 @@
-import { getHotelNames, getTfIdfScores } from "./knnModel.js";
+import { getHotelNames, getTfIdfScores, normalizeTfIdfDataset, normalize } from "./knnModel.js";
 import { getTfIdfVector, initializedTfIdf, getVocabulary } from "./vectorization.js";
 import { PCA } from "ml-pca";
 
@@ -48,10 +48,13 @@ const cosineSimilarity = (vec1, vec2) => {
 const predictionSimilarResult = async (query, rating) => {
     const labels = await getHotelNames(rating);
     const userQueryVector = await getTfIdfVector(query);
-    const reducedUserQueryVector = pca.predict([userQueryVector], {nComponents: numComponents}).to1DArray();
+    const normalizeUserQuery = normalize(userQueryVector);
     
-    const reducedHotelScores = pca.predict(hotelScores, {nComponents: numComponents}).to2DArray();
+    const reducedUserQueryVector = pca.predict([normalizeUserQuery], {nComponents: numComponents}).to1DArray();
     
+    const normalizeHotelScores= normalizeTfIdfDataset(hotelScores);
+    const reducedHotelScores = pca.predict(normalizeHotelScores, {nComponents: numComponents}).to2DArray();
+    //console.log(reducedUserQueryVector)
     const scores = labels.map((label, index) => {
         const similarity = cosineSimilarity(reducedUserQueryVector, reducedHotelScores[index]);
         //console.log(`Similarity between ${query} and ${label}: ${similarity}`);
@@ -59,8 +62,7 @@ const predictionSimilarResult = async (query, rating) => {
         
     });
 
-   const topScores = scores.sort((a, b) => b.score - a.score).slice(0, 10);
-    
+   const topScores = scores.sort((a, b) => b.score - a.score).slice(0, 12);
    const results = topScores.map(({ hotel }) => hotel);
     return results;
 }
