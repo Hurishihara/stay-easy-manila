@@ -256,7 +256,8 @@ function HeroSection () {
                             onChange={(e) => setHotelCharacteristics(e.target.value)}
                             />
                             <FormHelperText mb='2rem'>
-                                Enter characteristics that will refine your recommendations. For example: "Pet-friendly", "Eco-friendly", "Romantic getaway".
+                                Provide descriptive characteristics that will refine 
+                                your recommendations. For example: "Luxurious", "Elegant", "Sleek", "Cozy".
                             </FormHelperText>
                         </FormControl>
                         <FormControl 
@@ -265,17 +266,17 @@ function HeroSection () {
                             <FormLabel
                             fontWeight='bold'
                             fontFamily='drawerFontHeading'>
-                                Type your preferred hotel amenities:
+                                Type your preferred hotel facilities:
                             </FormLabel>
                             <Input 
                             borderRadius='2.75rem' 
                             minH='3rem' 
-                            placeholder="e.g., Pool, Gym, Free Wi-Fi"
+                            placeholder="e.g., Swimming Pool, Fitness Center, Free Wi-Fi"
                             value={hotelAmenities}
                             onChange={(e) => setHotelAmenities(e.target.value)} 
                             />
                             <FormHelperText mb='2rem'>
-                                Provide more specific amenities for better suggestions. For example: "Spa", "Business center", "Pet-friendly".
+                                Provide more specific facilities for better suggestions. For example: "Conference Rooms", "Business Center", "On-site Dining".
                             </FormHelperText>
                         </FormControl>
                         <FormControl 
@@ -289,12 +290,14 @@ function HeroSection () {
                             <Input 
                             borderRadius='2.75rem' 
                             minH='3rem' 
-                            placeholder="e.g., Non-smoking room, Quiet location, Near Mall"
+                            placeholder="e.g., Non-smoking room, Quiet location, Parking"
                             value={additionalRequests}
                             onChange={(e) => setAdditionalRequests(e.target.value)} 
                             />
                             <FormHelperText mb='2rem'>
-                                Specify anything else you might need or want in your hotel stay. This can include location preferences, room specifics, or other requests.
+                                Specify anything else you might need or want in your hotel stay. 
+                                This can include accessibility features, room amenities, 
+                                or other special requests. For example: "Elevator Access", "Balcony", "Late Check-in / Check-out"
                             </FormHelperText>
                         </FormControl>
                         </form>
