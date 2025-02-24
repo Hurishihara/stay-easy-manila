@@ -6,10 +6,10 @@ import { preprocess, main } from './dataPreparation.js';
 const TfIdf = natural.TfIdf; 
 
 // Function to initialize the TF-IDF Model
-const initializedTfIdf = async (rating) => {
+const initializedTfIdf = async (rating, preferredLocation) => {
    
     // Calls the main function to get the TF-IDF Model
-    const tfidfRawData = await main(rating); 
+    const tfidfRawData = await main(rating, preferredLocation); 
     
     if (!tfidfRawData) {
         throw new Error("TF-IDF Model not initialized. Please check the main function")

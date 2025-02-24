@@ -3,7 +3,7 @@ import { Box, Heading, Image, Card, CardBody, HStack, Text, AspectRatio } from '
 import { FaStar } from "react-icons/fa";
 
 
-const CustomCard = ({hotelName, description, starRating, hotelType, imagePath, onClick, key}) => {
+const CustomCard = ({hotelName, description, starRating, hotelType, imagePath, onClick, hotelLength, key}) => {
     
     const api = 'http://localhost:3000'
     
@@ -35,12 +35,14 @@ const CustomCard = ({hotelName, description, starRating, hotelType, imagePath, o
       })
     }
 
+    const boxMaxWidth = hotelLength < 2 ? '35%' : '100%';
+
     return (
     <>
         <Box
         onClick={onClick}
         cursor='pointer'
-        
+        maxW={{base: '100%', md: boxMaxWidth}}
         >
             <Card bgColor='primary'
             overflow='hidden'

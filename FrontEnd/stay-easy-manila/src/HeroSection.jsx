@@ -23,7 +23,8 @@ import {
     FormControl,
     FormLabel,
     FormHelperText,
-    DrawerFooter
+    DrawerFooter,
+    Select,
 } from '@chakra-ui/react'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import images from './images'
@@ -38,13 +39,13 @@ function HeroSection () {
     
     const { setHotel } = useHotelStore()
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [hotelRating, setHotelRating] = useState([])
-    const [hotelCharacteristics, setHotelCharacteristics] = useState('')
-    const [hotelAmenities, setHotelAmenities] = useState('')
-    const [additionalRequests, setAdditionalRequests] = useState('')
+    const [ hotelRating, setHotelRating ] = useState([])
+    const [ preferredLocation, setPreferredLocation ] = useState(undefined)
+    const [ hotelCharacteristics, setHotelCharacteristics ] = useState('')
+    const [ hotelAmenities, setHotelAmenities ] = useState('')
+    const [ additionalRequests, setAdditionalRequests ] = useState('')
     const navigate = useNavigate()
     const toast = useToast()
-    
 
     
 
@@ -53,7 +54,7 @@ function HeroSection () {
         const api = 'http://localhost:3000/api'
         
         const input = `${hotelCharacteristics} ${hotelAmenities} ${additionalRequests}`
-        const response = axios.post(`${api}/recommendations`, { hotelRating, input })
+        const response = axios.post(`${api}/recommendations`, { hotelRating, preferredLocation, input, })
         
        
         toast.promise(response, {
@@ -61,7 +62,7 @@ function HeroSection () {
                 title: 'Processing your request...',
                 description: 'Please wait while we fetch the best recommendations for you.',
                 status: 'info',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
                 position: 'bottom-left',
                 containerStyle: {
@@ -73,7 +74,7 @@ function HeroSection () {
                 title: 'Recommendations fetched successfully',
                 description: 'You will be redirected to the recommendations page...',
                 status: 'success',
-                duration: 3000,
+                duration: 5000,
                 position: 'bottom-left',
                 isClosable: true,
                 containerStyle: {
@@ -85,7 +86,7 @@ function HeroSection () {
                 title: 'Error processing request',
                 description: err.response.data,
                 status: 'error',
-                duration: 3000,
+                duration: 5000,
                 isClosable: true,
                 position: 'bottom-left',
                 containerStyle: {
@@ -98,6 +99,7 @@ function HeroSection () {
         })
         response.then((res) => {
             setHotel(res.data.data)
+            console.log(res.data)
             setTimeout(() => {
                 navigate('/ph/recommendations')
             }, 2000)
@@ -204,7 +206,8 @@ function HeroSection () {
                     </DrawerHeader>
                     <DrawerBody>
                         <form id='hotel-form' onSubmit={handleSubmit} method='post'  >
-                        <FormControl>
+                        <FormControl
+                        >
                             <FormLabel
                             fontWeight='bold'
                             fontFamily='drawerFontHeading'
@@ -241,8 +244,36 @@ function HeroSection () {
                                 Select one or more ratings to find hotels that meet your preferences.
                             </FormHelperText>
                         </FormControl>
+                        <FormControl>
+                            <FormLabel
+                            fontWeight='bold'
+                            fontFamily='drawerFontHeading'>
+                                Select your preferred location:
+                            </FormLabel>
+                            <Select 
+                            placeholder='Select Location'
+                            value={preferredLocation}
+                            onChange={(e) => setPreferredLocation(e.target.value)}
+                            >
+                                <option value='Makati City'>Makati</option>
+                                <option value='Taguig City'>Taguig</option>
+                                <option value='Pasay City'>Pasay</option>
+                                <option value='Manila City'>Manila</option>
+                                <option value='Quezon City'>Quezon City</option>
+                                <option value='Paranaque'>Parañaque</option>
+                                <option value='Muntinlupa City'>Muntinlupa</option>
+                                <option value='Pasig City'>Pasig</option>
+                                <option value='Las Pinas City'>Las Piñas</option>
+                                <option value='Mandaluyong City'>Mandaluyong</option>
+                            </Select>
+                            <FormHelperText mb='2rem'>
+                                Choose a location to find hotels that are near your preferred area.
+                            </FormHelperText>
+                        </FormControl>
                         <FormControl 
-                        mt='1.5rem'>
+                        mt='1.5rem'
+                        isRequired='true'
+                        >
                             <FormLabel
                             fontWeight='bold'
                             fontFamily='drawerFontHeading'>
@@ -262,10 +293,12 @@ function HeroSection () {
                         </FormControl>
                         <FormControl 
                         mt='1.5rem'
+                        isRequired='true'
                         >
                             <FormLabel
                             fontWeight='bold'
-                            fontFamily='drawerFontHeading'>
+                            fontFamily='drawerFontHeading'
+                            >
                                 Type your preferred hotel facilities:
                             </FormLabel>
                             <Input 
@@ -281,6 +314,7 @@ function HeroSection () {
                         </FormControl>
                         <FormControl 
                         mt='1.5rem'
+                        isRequired='true'
                         >
                             <FormLabel
                             fontWeight='bold'

@@ -15,7 +15,7 @@ const HotelList = () => {
   const { hotel } = useHotelStore()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedHotel, setSelectedHotel] = useState(null)
-
+  console.log(hotel)
 
   const openDrawer = (hotelData) => {
       setSelectedHotel(hotelData)
@@ -100,18 +100,29 @@ const HotelList = () => {
               elevate your travel experiences. 
             </Text>
           </Box>
-        <Box px='1rem' my='3rem'>
-        <Slider {...settings}>
+        {hotel.length === 0 ? (
+          <Box display='flex' justifyContent='center' alignItems='center' mt='3rem'>
+            <Heading color='fontColor' fontFamily='homePageHeading' fontSize='1.7rem'>
+              No Hotel Recommendations Found
+            </Heading>
+          </Box>
+        ) : (
+          <Box px='1rem' my='3rem'>
+        {hotel.length < 2 ? 
+        <Box p='3rem'>
           <CustomCard 
-          hotelName={hotel[0].hotel_name}
-          description={hotel[0].hotel_short_description}
-          starRating={hotel[0].stars}
-          hotelType={hotel[0].stars}
-          imagePath={hotel[0].image_folder_path}
-          onClick={() => openDrawer(hotel[0])}
-          key={0}
-          />
-          {hotel[1].map((item, index) => (
+        hotelName={hotel[0].hotel_name}
+        description={hotel[0].hotel_short_description}
+        starRating={hotel[0].stars}
+        hotelType={hotel[0].stars}
+        imagePath={hotel[0].image_folder_path}
+        onClick={() => openDrawer(hotel[0])}
+        hotelLength={hotel.length}
+        /> 
+        </Box>
+        :
+        <Slider {...settings}>
+          {hotel.map((item, index) => (
           <CustomCard
           hotelName={item.hotel_name}
           description={item.hotel_short_description}
@@ -119,15 +130,17 @@ const HotelList = () => {
           hotelType={item.stars}
           imagePath={item.image_folder_path}
           onClick={() => openDrawer(item)}
+          hotelLength={hotel.length}
           key={index + 1}
           />
         ))}
-        </Slider>
+        </Slider> }
         </Box>
-      {selectedHotel && <CustomDrawer 
-      isOpen={isOpen} 
-      onClose={onClose} 
-      selectedHotel={selectedHotel} />}
+        )}
+        {selectedHotel && <CustomDrawer 
+        isOpen={isOpen} 
+        onClose={onClose} 
+        selectedHotel={selectedHotel} />}
       </Box>
     </Box>
     </>

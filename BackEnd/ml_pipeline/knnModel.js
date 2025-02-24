@@ -4,12 +4,24 @@ import { getTfIdfVector, getVocabulary, initializedTfIdf } from './vectorization
 import { fetchHotel } from '../db/db.js';
 
 
-const getHotelNames = async (rating) => {
+const getHotelNames = async (rating, location) => {
     
     try {
         const hotelName = await fetchHotel(); // Get the hotel names from the database
-        if (Array.isArray(rating) && rating.length > 0) {
-            return hotelName.filter(hotel => rating.includes(hotel.stars)).map(row => row.hotel_name); // Filter the hotel names based on the rating
+        if (Array.isArray(rating) && rating.length > 0 && location) {
+            return hotelName
+                   .filter(hotel => rating.includes(hotel.stars) && hotel.location === location)
+                   .map(row => row.hotel_name); // Return the hotel names based on the rating and location
+        }
+        else if (Array.isArray(rating) && rating.length > 0) {
+            return hotelName
+                   .filter(hotel => rating.includes(hotel.stars))
+                   .map(row => row.hotel_name); // Return the hotel names based on the rating
+        }
+        else if (location) {
+            return hotelName
+                   .filter(hotel => hotel.location === location)
+                   .map(row => row.hotel_name); // Return the hotel names based on the location
         }
         else {
             return hotelName.map(row => row.hotel_name); // Return all the hotel names
@@ -70,9 +82,9 @@ const cosineSimilarity = (vec1, vec2) => {
 }
 
 let pca;
-const initializedKNN = async (rating) => {
-    const tfidf = await initializedTfIdf(rating); // Initializes the TF-IDF Model
-    const train_labels = await getHotelNames(rating); // Gets the hotel names to be used as labels
+const initializedKNN = async (rating, preferredLocation) => {
+    const tfidf = await initializedTfIdf(rating, preferredLocation); // Initializes the TF-IDF Model
+    const train_labels = await getHotelNames(rating, preferredLocation); // Gets the hotel names to be used as labels
     const train_dataset = getTfIdfScores(tfidf); // Gets the TF-IDF Scores for all documents
     
     const normalizeDataset = normalizeTfIdfDataset(train_dataset); // Normalizes the dataset
@@ -94,19 +106,19 @@ const initializedKNN = async (rating) => {
     }
     const reducedDataset = pca.predict(normalizeDataset, { nComponents: nComponents }).to2DArray(); // Reduces the dataset using PCA
     
-    const knn = new KNN(reducedDataset, train_labels, { k: 9, distance: cosineSimilarity }); // Instantiates the KNN Model
+    const knn = new KNN(reducedDataset, train_labels, { k: 15, distance: cosineSimilarity }); // Instantiates the KNN Model
     return { knn, nComponents};
 }
 
-const predictionTopResult = async (query, rating) => {
-    const { knn, nComponents } = await initializedKNN(rating); // Get the knn model
+const predictionTopResult = async (query, rating, location) => {
+    const { knn, nComponents } = await initializedKNN(rating, location); // Get the knn model
     const userQueryVector = await getTfIdfVector(query); // Get the TF-IDF Vector for the user's query
     const normalizeQueryVector = normalize(userQueryVector); // Normalize the query vector
     const reduceQueryVector = pca.predict([normalizeQueryVector], {nComponents: nComponents }).to1DArray() // Reduce the query vector using PCA
     const result = knn.predict(reduceQueryVector); // Predict the result
+    console.log('knnModel.js, Result: ', result)
     return result;
 }
 
-//console.log(await predictionTopResult('Luxurious hotel with spa business centre fitness centre and modern amenities contemporary design', ['4.0']));
 
  export { predictionTopResult, getHotelNames, getTfIdfScores, initializedKNN, normalizeTfIdfDataset, normalize };

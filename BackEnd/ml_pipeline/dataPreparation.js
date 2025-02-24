@@ -8,11 +8,24 @@ const TfIdf = natural.TfIdf;
 let tfidf;
 
 // Get the descriptions from the database
-const getHotelDescriptions = async (rating) => {
+const getHotelDescriptions = async (rating, preferredLocation) => {
+   
     try{
         const hotelDescription = await fetchHotel()
-        if (Array.isArray(rating) && rating.length > 0) {
-            return hotelDescription.filter(hotel => rating.includes(hotel.stars)).map(row => row.description)
+        if (Array.isArray(rating) && rating.length > 0 && preferredLocation) {
+            return hotelDescription
+                   .filter(hotel => rating.includes(hotel.stars) && hotel.location === preferredLocation)
+                   .map(row => row.description)
+        }
+        else if (Array.isArray(rating) && rating.length > 0) {
+            return hotelDescription
+                   .filter(hotel => rating.includes(hotel.stars))
+                   .map(row => row.description)
+        }
+        else if (preferredLocation) {
+            return hotelDescription
+                   .filter(hotel => hotel.location === preferredLocation)
+                   .map(row => row.description)
         }
         else {
             return hotelDescription.map(row => row.description)
@@ -36,13 +49,13 @@ const customTokenizer = (text) => {
 }
 
 // Main function to load the TF-IDF Model
-const main = async (rating) => {
+const main = async (rating, preferredLocation) => {
     
     // Load the TF-IDF Model if it exists, otherwise create a new one
     tfidf = new TfIdf();
 
     // Await the hotel descriptions
-    const hotelDescriptions = await getHotelDescriptions(rating)
+    const hotelDescriptions = await getHotelDescriptions(rating, preferredLocation)
     
     /* Preprocess the sample TF-IDF Model Data into array of tokens
     For example: ['Luxury', 'Hotel, 'Pool' 'Spa'], ['Budget, 'Hotel', 'Free', Wifi], etc

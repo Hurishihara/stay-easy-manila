@@ -9,10 +9,7 @@ const db = new pg.Client({
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    port: process.env.DB_PORT
 })
 
 const connectDatabase = async () => {
@@ -34,6 +31,26 @@ export const fetchHotel = async () => {
         return res.rows;
     }
     catch(err) {    
+        console.error(err)
+    }
+}
+
+const validateHotelByLocation = async (location) => {
+   
+    const query = 
+        `
+        SELECT hotel_name, stars, hotel_short_description, reviews, image_folder_path, website_link, amenities
+        FROM hotel_info
+        JOIN hotel_details
+        ON hotel_info.id = hotel_details.hotel_id
+        WHERE location = $1
+        `
+
+    try {
+        const res = await db.query(query, [location])
+        return res.rows;
+    }
+    catch(err) {
         console.error(err)
     }
 }
@@ -83,4 +100,6 @@ const fetchTopResultHotel = async (hotelName) => {
     }
 }
 
-export { fetchSimilarResultsHotel, fetchTopResultHotel };
+
+
+export { fetchSimilarResultsHotel, fetchTopResultHotel, validateHotelByLocation };

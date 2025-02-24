@@ -45,8 +45,9 @@ const cosineSimilarity = (vec1, vec2) => {
 }
 
 // Function to predict the top result
-const predictionSimilarResult = async (query, rating) => {
-    const labels = await getHotelNames(rating);
+const predictionSimilarResult = async (query, rating, preferredLocation) => {
+    const labels = await getHotelNames(rating, preferredLocation);
+    console.log('Similarity.js, Labels.length: ', labels.length)
     const userQueryVector = await getTfIdfVector(query);
     const normalizeUserQuery = normalize(userQueryVector);
     
@@ -62,7 +63,9 @@ const predictionSimilarResult = async (query, rating) => {
         
     });
 
-   const topScores = scores.sort((a, b) => b.score - a.score).slice(0, 12);
+   const numberOfResults = Math.min(Math.floor(labels.length / 4), 13)
+   console.log('Similarity.js, numberOfResults and labels.length: ', numberOfResults, labels.length)
+   const topScores = scores.sort((a, b) => b.score - a.score).slice(0, numberOfResults);
    const results = topScores.map(({ hotel }) => hotel);
     return results;
 }
