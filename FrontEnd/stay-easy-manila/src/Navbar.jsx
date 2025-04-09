@@ -59,13 +59,6 @@ function NavBar () {
                 >
                     Home
                 </ChakraLink>
-                <Text
-                fontFamily='title'
-                fontSize='1.5625rem'
-                color='fontColor'
-                >
-                    About Us
-                </Text>
             </HStack>
             <Menu>
                 <MenuButton 

@@ -57,7 +57,7 @@ const getTfIdfVector = async (query) => {
     tfidf.tfidfs(preProcessedUserQuery, (i, measure) => {
         queryVector[i] = measure
     })
-    return  queryVector;
+    return queryVector;
 }
 
 

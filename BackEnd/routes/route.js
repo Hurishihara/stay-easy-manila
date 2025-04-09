@@ -1,10 +1,7 @@
 import express from 'express';
-import en from 'dictionary-en'
-import nspell from 'nspell'
 import { getRecommendations } from '../ml_pipeline/recommendation.js'
-import { getVocabulary } from '../ml_pipeline/vectorization.js'
+
 const router = express.Router();
-const spell = nspell(en)
 
 router.get('/', (req, res) => {
     res.send('Hello World!')
