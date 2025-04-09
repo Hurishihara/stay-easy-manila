@@ -38,8 +38,10 @@ jobs:
         with:
           node-version: latest
       - name: Install dependencies
+        working-directory: FrontEnd/stay-easy-manila
         run: npm install
       - name: Build
+        working-directory: FrontEnd/stay-easy-manila
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -47,7 +49,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
-          path: './dist'
+          path: 'FrontEnd/stay-easy-manila/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
