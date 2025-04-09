@@ -17,7 +17,11 @@ import ProtectedRoute from '../ProtectedRoute.jsx'
 const router = createBrowserRouter([
   {path: '/', element: <App />},
   {element: <ProtectedRoute /> , children: [{ path: '/ph/recommendations', element: <HotelList /> }]},
-])
+], {
+  basename: '/stay-easy-manila/' // Set the base URL for the app,
+})
+
+console.log(import.meta.env.VITE_BASE_URL)
 
 const theme = extendTheme({
   colors: {
