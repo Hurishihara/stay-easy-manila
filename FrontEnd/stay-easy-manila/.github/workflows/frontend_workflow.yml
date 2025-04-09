@@ -39,10 +39,8 @@ jobs:
           node-version: latest
       - name: Install dependencies
         run: npm install
-        working-directory: frontEnd/stay-easy-manila
       - name: Build
         run: npm run build
-        working-directory: frontEnd/stay-easy-manila
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
