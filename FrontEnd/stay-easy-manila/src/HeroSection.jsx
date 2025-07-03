@@ -138,21 +138,21 @@ function HeroSection () {
                     backgroundSize='cover'
                     backgroundPosition='center'
                     borderRadius='1.75rem'
-                    h={{base: '90vh', md: '90vh'}}
+                    h={{base: '90vh'}}
                     
                     >
                         <Grid
                         templateColumns='repeat(12, 1fr)'
-                        p={{base: '2rem', md: '5rem'}}
-                        gap={{base: '2rem', md: '5rem'}}
+                        p={{base: '2rem', lg: '3rem', xl: '5rem'}}
+                        gap={{base: '2rem', lg: '3rem', xl: '5rem'}}
                         >
                             <GridItem colSpan={{base: 12, md: 8}} >
                                 <Heading
                                 fontFamily='homePageHeading'
-                                fontSize={{base: '2rem', md: '5rem'}}
+                                fontSize={{base: '2rem', lg: '3rem', xl: '5rem'}}
                                 color='whitesmoke'
                                 fontWeight='bold'
-                                lineHeight={{base: '2.5rem', md: '5rem'}}
+                                lineHeight={{base: '2.5rem', lg: '3rem', xl: '5rem'}}
                                 mt={{base: '14rem', md: '0'}}
                                 >
                                     Find the Perfect Stay in Metro Manila with Ease!
@@ -161,7 +161,7 @@ function HeroSection () {
                             <GridItem colSpan={{base: 12, md: 7}}>
                                 <Text
                                 fontFamily='body'
-                                fontSize={{base: '1rem', md: '1.5rem'}}
+                                fontSize={{base: '1rem', lg: '1.5rem', xl: '2rem'}}
                                 as='i'
                                 color='whitesmoke'
                                 >
