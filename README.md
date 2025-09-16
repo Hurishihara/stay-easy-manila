@@ -144,4 +144,14 @@ recommendations.
 
 ## Note
 
-This is a thesis project. The performance and accuracy of the recommendations depend on the quality and quantity of the hotel data in the database.
+- **Academic Purpose:** This system was developed as part of a Computer Science thesis project. It is intended for research, learning, and demonstration of machine learning and natural language processing techniques in the context of hotel recommendations.
+- **Data Dependency:** The quality and accuracy of recommendations depend heavily on the completeness and correctness of the hotel dataset. Limited or inconsistent data may lead to suboptimal results.
+- **Performance Limitations:** The system uses TF-IDF and k-NN with cosine similarity, which work well for small to medium datasets. However, performance may degrade if scaled to very large datasets without further optimization.
+- **Active Development:** Additional features such as user accounts, review integration, multi-language support, and advanced filtering are planned but not yet fully implemented.
+- **Not a Production System:** This project is designed for **academic research and prototype demonstration only**. It is **not optimized for commercial deployment** or large-scale production use.
+- Future Enhancements:
+    - Integration with real-time hotel APIs (Agoda, Booking.com, etc.)
+    - Support for hybrid recommendation approaches (content + collaborative filtering)
+    - Enhanced personalization with user history and feedback
+    - Export/Report generation for hotel comparisons
+
