@@ -4,7 +4,7 @@ This thesis project implements a **Hotel Recommendation System** for Metro Manil
 
 ## 🚀 Features
 
-- **ersonalized Recommendations:** Get hotel suggestions tailored to your specific preferences for location, star rating, amenities, and more.
+- **Personalized Recommendations:** Get hotel suggestions tailored to your specific preferences for location, star rating, amenities, and more.
 - **Content-Based Filtering:** Uses NLP (TF-IDF) to analyze hotel descriptions and match them with user-inputted characteristics.
 - **Machine Learning Model:** Employs a k-Nearest Neighbors (k-NN) algorithm with cosine similarity to find the most relevant hotels.
 - **Interactive Web Interface:** A modern, responsive React frontend for a seamless user experience.
